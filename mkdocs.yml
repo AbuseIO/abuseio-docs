@@ -7,13 +7,13 @@ extra:
     version: 4.x
 pages:
 - Getting Started:
-    - 'docs/installation.md'
-    - 'docs/migration.md'
-    - 'docs/configuration-main.md'
-    - 'docs/common_problems.md'
+    - 'installation.md'
+    - 'migration.md'
+    - 'configuration-main.md'
+    - 'common_problems.md'
 - User Guide:
-    - 'Data collection': 'docs/data_collection.md'
-    - 'Notifications': 'docs/notifications.md'
+    - 'Data collection': 'data_collection.md'
+    - 'Notifications': 'notifications.md'
 - About:
-    - 'License': 'docs/license.md'
-    - 'Release Notes': 'docs/release-notes.md'
+    - 'License': 'license.md'
+    - 'Release Notes': 'release-notes.md'
