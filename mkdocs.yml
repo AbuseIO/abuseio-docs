@@ -3,11 +3,7 @@ site_url: https://docs.abuse.io
 repo_url: https://github.com/AbuseIO/abuseio-docs
 repo_name: AbuseIO Documentation
 site_author: AbuseIO Foundation
-markdown_extensions:
-    - smarty
-    - toc:
-        permalink: True
-    - sane_lists
+theme: Cerulean
 extra:
     version: 4.0
 pages:
