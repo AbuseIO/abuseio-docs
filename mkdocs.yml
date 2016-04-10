@@ -1,0 +1,19 @@
+site_name: AbuseIO Documentation
+site_url: https://docs.abuse.io
+repo_url: https://github.com/AbuseIO/abuseio-docs
+repo_name: AbuseIO Documentation
+site_author: AbuseIO Foundation
+extra:
+    version: 4.x
+pages:
+- Getting Started:
+    - 'docs/installation.md'
+    - 'docs/migration.md'
+    - 'docs/configuration-main.md'
+    - 'docs/common_problems.md'
+- User Guide:
+    - 'Data collection': 'docs/data_collection.md'
+    - 'Notifications': 'docs/notifications.md'
+- About:
+    - 'License': 'docs/license.md'
+    - 'Release Notes': 'docs/release-notes.md'
