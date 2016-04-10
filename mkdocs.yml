@@ -9,7 +9,7 @@ markdown_extensions:
         permalink: True
     - sane_lists
 extra:
-    version: 4.x
+    version: 4.0
 pages:
 - Getting Started:
     - 'installation.md'
@@ -22,3 +22,4 @@ pages:
 - About:
     - 'License': 'license.md'
     - 'Release Notes': 'release-notes.md'
+
