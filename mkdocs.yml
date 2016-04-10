@@ -3,7 +3,7 @@ site_url: https://docs.abuse.io
 repo_url: https://github.com/AbuseIO/abuseio-docs
 repo_name: AbuseIO Documentation
 site_author: AbuseIO Foundation
-theme: Cerulean
+theme: cerulean
 extra:
     version: 4.0
 pages:
