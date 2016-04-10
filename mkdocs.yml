@@ -3,7 +3,6 @@ site_url: https://docs.abuse.io
 repo_url: https://github.com/AbuseIO/abuseio-docs
 repo_name: AbuseIO Documentation
 site_author: AbuseIO Foundation
-theme: cerulean
 pages:
 - Getting Started:
     - 'installation.md'
