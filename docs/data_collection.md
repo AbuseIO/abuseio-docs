@@ -140,10 +140,9 @@ The integration of remote contact data is explained in its own chapter
 Each parser has its own dedicated configuration. This can be divided into four sections. Lets take a look at the
 parser for shadowserver which can be found in ./vendor/abuseio/parser-shadowserver/.
 
-This directly contains the parser in the /src/ directory and the configuration in the /config/ directory. Inside the 
-config directory you will find the Shadowserver.php containing the default configuration (which you should never edit)
-and three subfolders called production, development and testing. You can place your own Shadowserver.php in each of 
-directories which represents the running environment so you can use a different config for testing and production.
+This directory contains the parser in the /src/ directory and the configuration in the /config/ directory. Inside the 
+config directory you will find the Shadowserver.php containing the default configuration (which you should never edit).
+Instead you can create a copy of the config/Shadowserver.php into $app/config/$environment/parsers/.
 
 The contents of the config file is simply a single PHP array with the configurable items. You will not have to recreate
 the entire array, but only need to create the same array keys with values you want to change. The configuration will

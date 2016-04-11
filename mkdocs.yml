@@ -1,17 +1,25 @@
-site_name: AbuseIO Documentation
+site_name: AbuseIO 4.0
 site_url: https://docs.abuse.io
-repo_url: https://github.com/AbuseIO/abuseio-docs
-repo_name: AbuseIO Documentation
 site_author: AbuseIO Foundation
+markdown_extensions:
+    - smarty
+    - toc:
+        permalink: True
+    - sane_lists
+extra:
+    version: 4.0
+theme: cerulean
 pages:
-- Getting Started:
-    - 'installation.md'
-    - 'migration.md'
-    - 'configuration-main.md'
-    - 'common_problems.md'
-- User Guide:
+- 'Index': 'index.md'
+- 'Getting Started':
+    - 'Installation': 'installation.md'
+    - 'Migrating from 3.x': 'migration.md'
+    - 'Main configuration': 'configuration_main.md'
+    - 'Common problems': 'common_problems.md'
+- 'User Guide':
     - 'Data collection': 'data_collection.md'
     - 'Notifications': 'notifications.md'
-- About:
+- 'About':
     - 'License': 'license.md'
-    - 'Release Notes': 'release-notes.md'
+    - 'Release Notes': 'release_notes.md'
+
