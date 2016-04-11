@@ -15,8 +15,10 @@
 
 ### Ubuntu
 ```bash
-apt-get install curl git mysql-server apache2 apache2-utils postfix supervisor libapache2-mod-php5 php5 php-pear php5-dev php5-mcrypt php5-mysql php5-pgsql php5-curl php5-intl
+apt-get install curl git mysql-server apache2 apache2-utils supervisor libapache2-mod-php5 php5 php-pear php5-dev php5-mcrypt php5-mysql php5-pgsql php5-curl php5-intl
 ```
+
+In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
 
 ### Centos
 Still a work in progress, but minimal:
@@ -121,7 +123,14 @@ chown syslog:adm /var/log/abuseio
 supervisorctl reread
 /etc/init.d/supervisor restart
 service rsyslog restart
+
+supervisorctl stop abuseio_queue_collector
+supervisorctl stop abuseio_queue_email_incoming
+supervisorctl stop abuseio_queue_email_outgoing
 ```
+> Important: Leave these supervisor jobs stopped until you completed the entire installation process,
+or you might get a lot of error logs!
+
 > Important: The supervisord worker threads run in daemon mode. This will allow the framework to
 be cached and saves a lot of CPU cycles. However if you edit the code in _ANY_ way you will need
 to restart these daemons (or better: stop -> code change -> start) to prevent jobs from failing!
@@ -335,3 +344,13 @@ config where you copied it from. Its a overlay override method. So only variable
 (changed) will be actually used. If in the default config there is a option called 'bla' and you remove it from your
 override config, then the default option will be used. So you are not required to copy the entire file, but you can
 just copy the elements needed into a new file (although a full copy will simplify things)
+
+## Startup supervisor processes
+
+Finally start the framework deamons:
+
+```bash
+supervisorctl start abuseio_queue_collector
+supervisorctl start abuseio_queue_email_incoming
+supervisorctl start abuseio_queue_email_outgoing
+```
