@@ -45,6 +45,11 @@ mv composer.phar /usr/local/bin/composer
 
 #### Mailparse
 This is a pecl module for php that has to be downloaded and compiled before you can use it.
+If you're running PHP7 or later, run:
+```bash
+pecl install mailparse
+```
+If you're running PHP5.6 or older, run:
 ```bash
 pecl install mailparse-2.1.6
 ```
