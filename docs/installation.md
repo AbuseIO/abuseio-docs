@@ -307,11 +307,20 @@ php artisan role:assign --role admin --user admin@isp.local
 
 The user:create command also accepts options such as --password, however if not specified a password will be generated and default settings will be used.
 
+## Startup supervisor processes again
+
+Start the framework deamons, after databases have been initialised:
+
+```bash
+supervisorctl start abuseio_queue_collector
+supervisorctl start abuseio_queue_email_incoming
+supervisorctl start abuseio_queue_email_outgoing
+```
+
 ## Cronjobs
 
 Add a crontab for the user abuseio.  
 This scheduler job needs to run every minute and will be kicking off internal jobs at the configured intervals from the main configuration. Example:
-
 
 Run: `crontab -e -u abuseio`
 ```
@@ -332,9 +341,12 @@ queue runners are running in --daemon mode (the services from supervisord). This
 faster, however does not reread the configuration until the daemon has been restarted. So if you change the confguration
 you will need to restart the supervisord services too!
 
-Copy `/opt/abuseio/config/main.php` to the environment folder `/opt/abuseio/config/$ENV`.
-f.e. If you want to configure you production environment do
-`cp /opt/abuseio/config/main.php /opt/abuseio/config/production/main.php`. Then setup stuff like the sender of your e-mails, where to bounce, etc in the file `/opt/abuseio/config/$ENV/main.php`.
+Copy `/opt/abuseio/config/main.php` to the chosen environment folder `/opt/abuseio/config/$ENV/`.
+For example, if you want to configure you production environment do:
+```
+ cp /opt/abuseio/config/main.php /opt/abuseio/config/production/main.php
+```
+Then setup stuff like the sender of your e-mails, where to bounce, etc in the file `/opt/abuseio/config/$ENV/main.php`.
 
 Also if you have changed the username and/or group where you run AbuseIO under, you will need to update the
 config `/opt/abuseio/config/app.php` as well.
@@ -344,13 +356,3 @@ config where you copied it from. Its a overlay override method. So only variable
 (changed) will be actually used. If in the default config there is a option called 'bla' and you remove it from your
 override config, then the default option will be used. So you are not required to copy the entire file, but you can
 just copy the elements needed into a new file (although a full copy will simplify things)
-
-## Startup supervisor processes
-
-Finally start the framework deamons:
-
-```bash
-supervisorctl start abuseio_queue_collector
-supervisorctl start abuseio_queue_email_incoming
-supervisorctl start abuseio_queue_email_outgoing
-```
