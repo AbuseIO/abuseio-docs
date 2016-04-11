@@ -18,6 +18,12 @@
 apt-get install curl git mysql-server apache2 apache2-utils supervisor libapache2-mod-php5 php5 php-pear php5-dev php5-mcrypt php5-mysql php5-pgsql php5-curl php5-intl
 ```
 
+If you're running PHP7 or later then you must install BCmath manually, as its no longer a part of the default installation:
+
+```bash
+apt-get install php7.0-bcmath
+```
+
 In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
 
 ### Centos
