@@ -79,7 +79,7 @@ user and password to access the database. An example:
             'prefix'    => '',
             'strict'    => false,
         ],
-'''
+```
 
 # Preperations (-p / --prepare)
 
