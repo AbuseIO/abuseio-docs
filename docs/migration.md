@@ -41,7 +41,45 @@ tuned MySQL, etc will reduce the time required for this migration.
 database wil not need any changes, but if you're bold you can use the old 3.x credentials to the database.
 
 - in the config/database.php file create a copy of the 'mysql' element and name it abuseio3 with the server, 
-user and password to access the database.
+user and password to access the database. An example:
+
+```php
+    // This is the connections settings
+    'connections' => [
+
+        // Default, ignore this
+        'sqlite' => [
+            'driver'   => 'sqlite',
+            'database' => storage_path().'/database.sqlite',
+            'prefix'   => '',
+        ],
+
+        // This is your production AbuseIO4 database
+        'mysql' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', 'localhost'),
+            'database'  => env('DB_DATABASE', 'abuseio'),
+            'username'  => env('DB_USERNAME', 'root'),
+            'password'  => env('DB_PASSWORD', 'xxxxxxxxxx'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
+        // This is the driver you will need to add for the migration
+        'abuseio3' => [
+            'driver'    => 'mysql',
+            'host'      => env('DB_HOST', 'localhost'),
+            'database'  => 'abuseio3',
+            'username'  => env('DB_USERNAME', 'root'),
+            'password'  => env('DB_PASSWORD', 'xxxxxxxxxxxx'),
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+'''
 
 # Preperations (-p / --prepare)
 
