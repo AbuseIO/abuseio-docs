@@ -166,7 +166,7 @@ postconf -e transport_maps=hash:/etc/postfix/transport
 
 /etc/aliases:
 ```bash
-echo "notifier: notifier.isp.local" >> /etc/aliases
+echo "notifier: notifier@isp.local" >> /etc/aliases
 newaliasses
 ```
 
