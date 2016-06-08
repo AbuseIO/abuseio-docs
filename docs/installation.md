@@ -92,8 +92,8 @@ There are a few ways you can install AbuseIO: you can download a tarball or inst
 ## Install from tarball
 ```bash
 cd /opt
-wget https://abuse.io/releases/abuseio-4.0.0.tar.gz
-tar zxf abuseio-4.0.0.tar.gz
+wget https://abuse.io/releases/abuseio-latest.tar.gz
+tar zxf abuseio-latest.tar.gz
 ```
 
 ## Install with composer
