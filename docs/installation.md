@@ -9,7 +9,7 @@
 + PHP 5.5.9+ (Both CLI as apache module)
 + (__optional__) Local resolving nameserver (Bind, pDNSRecursor) ([more info](#resolving))
 
-# Preperations
+# Preparation
 
 ## Pre-install Requirements
 
@@ -26,16 +26,16 @@ apt-get install php7.0-bcmath
 
 In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
 
-### Centos
+### CentOS
 Still a work in progress, but minimal:
 ```bash
 php-bcmath
 ```
 
 ### Composer
-Although composer is not required, we highly recommend to install Composer as it would allow you to easily update certain parts of the system. You can run without composer by downloading the pre-made TAR archive from our website.
+Although Composer is not required, we highly recommend that you install Composer as it allows you to easily update certain parts of the system. You can install AbuseIO without Composer by downloading the premade .TAR archive from our website.
 
-Download the latest version of [composer](https://getcomposer.org/) and make it accessible system-wide.
+Download the latest version of [Composer](https://getcomposer.org/) and make it accessible system-wide.
 ```bash
 cd /tmp
 curl -sS https://getcomposer.org/installer | php
@@ -46,7 +46,7 @@ chown root:root /usr/local/bin/composer
 
 
 ### Mailparse
-This is a pecl module for php that has to be downloaded and compiled before you can use it.
+This is a PECL module for PHP that has to be downloaded and compiled before you can use it.
 If you're running PHP7 or later, run:
 ```bash
 pecl install mailparse
@@ -64,13 +64,12 @@ php5enmod mailparse
 php5enmod mcrypt
 ```
 
-
 ## Create local user
-We're creating a local user to run the application as.
+We're creating local user, 'abuseio', which will be used to run the application.
 ```bash
 adduser abuseio
 ```
-Then add your apache user and MTA user to the abuseio group.  
+Then add your Apache user and MTA user to the 'abuseio' group.  
 Ubuntu defaults would then be:
 
 ```bash
@@ -78,15 +77,15 @@ addgroup abuseio abuseio
 addgroup postfix abuseio
 addgroup www-data abuseio
 ```
-> You will need to restart apache and postfix in this example to make your changes active!
+> You will need to restart Apache and Postfix in this example to make your changes active!
 
 
 # Installation
 
-There are a few ways you can install AbuseIO: you can download a tarball or install with composer. Either way is fine.
+You can install AbuseIO by downloading a tarball or installing with Composer. Either way will work fine.
 
 > Keep note of the following:  
-> - Updating/Installing packages with composer might require a GitHub account and a generated token.
+> - Updating/installing packages with composer might require a GitHub account and a generated token.
 > - You should __NOT__ run the `composer update` command, unless you know exactly what you are doing.
 
 ## Install from tarball
@@ -96,7 +95,7 @@ wget https://abuse.io/releases/abuseio-latest.tar.gz
 tar zxf abuseio-latest.tar.gz
 ```
 
-## Install with composer
+## Install with Composer
 Install the latest stable version:
 ```bash
 cd /opt
@@ -110,7 +109,7 @@ composer create-project abuseio/abuseio --stability=beta (options are: stable, R
 ```
 
 ## Permissions
-Some parts of the installation had to be done as root and the application will run as user 'abuseio', so we need to set some permissions.
+Some parts of the installation run as the root user. Since the application will run as user 'abuseio', we need to set some permissions.
 
 ```bash
 cd /opt/abuseio
@@ -121,7 +120,7 @@ chmod 770 bootstrap/cache/
 
 
 ## Supervisor, logrotate, rsyslog
-This will setup supervisor, logrotate and rsyslog for you
+These commands will set up supervisor, logrotate and rsyslog for you.
 ```bash
 cp -vr /opt/abuseio/extra/etc/* /etc/
 mkdir /var/log/abuseio
@@ -135,11 +134,11 @@ supervisorctl stop abuseio_queue_email_incoming
 supervisorctl stop abuseio_queue_email_outgoing
 ```
 > Important: Leave these supervisor jobs stopped until you completed the entire installation process,
-or you might get a lot of error logs!
+or you might get a lot of errors in your logs!
 
 > Important: The supervisord worker threads run in daemon mode. This will allow the framework to
-be cached and saves a lot of CPU cycles. However if you edit the code in _ANY_ way you will need
-to restart these daemons (or better: stop -> code change -> start) to prevent jobs from failing!
+be cached and will save a lot of CPU cycles. However if you edit the code in _ANY_ way you will need
+to restart these daemons to prevent jobs from failing. A better option would be to stop the daemons before making a code change, and starting them after the change is complete.
 
 > Note: If you get messages on 'hanging' jobs its most likely these supervisor jobs are not running.
 Please make sure you see running processes from the configured supervisor jobs before submitting
@@ -150,8 +149,7 @@ a bug report.
 ### Postfix
 Configure delivery using transport maps
 
-> make sure 'isp.local' is in your local domains
-
+> Make sure 'isp.local' is in your local domains.
 
 Create file /etc/postfix/transport:
 ```bash
@@ -186,8 +184,8 @@ Restart postfix:
 ## Webserver
 
 ### Apache httpd
-Setting up a simple virtualhost for AbuseIO.
-> It is recommended to setup a virtualhost with SSL enabled.
+Setting up a simple virtual host for AbuseIO.
+> It is recommended to setup a virtual host with SSL enabled.
 
 Enable modules:
 ```bash
@@ -303,7 +301,7 @@ extra/notifier-samples/runall-noqueue
 
 ## Creating an admin user for the GUI
 
-In the default installation there isn't an admin user, so we must create one first.
+The default installation does not create an admin user unless you seed the demo data. You can create an admin user manually using these commands.
 
 ```
 cd /opt/abuseio
@@ -311,11 +309,11 @@ php artisan user:create --email admin@isp.local
 php artisan role:assign --role admin --user admin@isp.local
 ```
 
-The user:create command also accepts options such as --password, however if not specified a password will be generated and default settings will be used.
+The user:create command will use default settings for any optional arguments. If the --password option is missing then a randomly generated password will be assigned.
 
-## Startup supervisor processes again
+## Start the supervisor processes again
 
-Start the framework deamons, after databases have been initialised:
+Start the framework daemons, after databases have been initialised:
 
 ```bash
 supervisorctl start abuseio_queue_collector
@@ -325,7 +323,7 @@ supervisorctl start abuseio_queue_email_outgoing
 
 ## Cronjobs
 
-Add a crontab for the user abuseio.  
+Add a crontab for the user 'abuseio'.  
 This scheduler job needs to run every minute and will be kicking off internal jobs at the configured intervals from the main configuration. Example:
 
 Run: `crontab -e -u abuseio`
@@ -335,17 +333,14 @@ Run: `crontab -e -u abuseio`
 
 ## Setup local resolving
 
-Some parsers produce high amounts of DNS queries, so you're better off using a local resolve (e.g. bind).
-In the above install example, bind is installed and you only need to update your /etc/resolv.conf (or
-with newer ubuntu versions the /etc/network/interfaces) to use 127.0.0.1 as the FIRST resolver -- but make
-sure you leave a 2nd or 3rd with your 'normal' resolvers.
+Some parsers produce high amounts of DNS queries, so you're better off using a local resolver, such as bind.
+Once bind is installed, you only need to update your resolver configuration to use 127.0.0.1 as the first resolver. Make sure you leave your original resolvers as the second and third options. In most distributions, you will simply add 127.0.0.1 as the first line in /etc/resolv.conf. In newer versions of Ubuntu, resolvers are configured in /etc/network/interfaces.
 
 ## Core configuration
 
-Once completed there are a few settings you will need to configure. First off you need to be aware that by default your
-queue runners are running in --daemon mode (the services from supervisord). This is greate for saving CPU and is a lot
-faster, however does not reread the configuration until the daemon has been restarted. So if you change the confguration
-you will need to restart the supervisord services too!
+Once completed there are a few settings you will need to configure. First off, be aware that by default your
+queue runners are running in --daemon mode (the services from supervisord). This is great for reducing CPU load, and it is a lot
+faster. However, configuration changes are only read when the supervisord services start. So, if you change the configuration then you will need to restart the supervisord services too!
 
 Copy `/opt/abuseio/config/main.php` to the chosen environment folder `/opt/abuseio/config/$ENV/`.
 For example, if you want to configure you production environment do:
@@ -357,8 +352,4 @@ Then setup stuff like the sender of your e-mails, where to bounce, etc in the fi
 Also if you have changed the username and/or group where you run AbuseIO under, you will need to update the
 config `/opt/abuseio/config/app.php` as well.
 
-Creating a copy into the $ENV folder with the giving example from above you create a 'override' from the default
-config where you copied it from. Its a overlay override method. So only variables in your override config you have set
-(changed) will be actually used. If in the default config there is a option called 'bla' and you remove it from your
-override config, then the default option will be used. So you are not required to copy the entire file, but you can
-just copy the elements needed into a new file (although a full copy will simplify things)
+Creating a copy in the $ENV folder with the example above allows you to override the defaults specified in the original file. Only the variables in your override config which you modify will actually be used. If the default config contains an option called 'bla', and you remove it from your override config, then the default option will be used. So, you are not required to copy the entire file, but you can just copy the elements needed into a new file. Using a full copy can help simplify your configuration.
