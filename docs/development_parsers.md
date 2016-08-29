@@ -20,6 +20,12 @@ repository as tidy as possible.
 If you have build a parser, don't worry and just submit your code. The AbuseIO Core team will
 help you with the integration of it.
 
+Also when working with parsers (or any kind of development) you need to be aware that Laravel
+caches the framework. Therefor classes, autoloaders, but also configuration files are cached
+and you will need to reload them regurally to make sure it reflects your development. If you
+are developing we'd suggest removing the -daemon option from all the supervisored processes so
+all your changes are updated in realtime as much as possible.
+
 Finally let us know that you are working on something, this way we can help you and make sure
 others are not starting on duplicate work. We have an IRC channel were already a lot of
 developers are chatting and could be of help while you are developing on your own.
