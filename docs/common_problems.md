@@ -23,3 +23,25 @@ Solution:
 Restart the supervisord services (currently 3) or the entire supervisord daemon, which is safe to do if this is system
 is dedicated to AbuseIO. After restarting it you will see in the /var/log/abuseio/queue* files the workers to pick up
 work and start handling the data from the received e-mails.
+
+
+## 2. Still having the old configuration active after changing config files
+
+Sympthoms: 
+
+- your configuration options that have changed still reflect the old settings
+- AND/OR parsers with changed configuration (e.g. to enable them) still reflect the old settings
+
+Possible cause:
+
+Laravel Framework has not been reloaded. 
+
+To save a lot of CPU/Memory the framework and its configuration is only loaded up once for all the daemons. After changing a configuration you will need to reload the framework to make the new configuration 'active'.
+
+Solution:
+
+Restart (all) the supervisor processes of AbuseIO, for example:
+
+supervisorctl restart abuseio_queue_collector
+supervisorctl restart abuseio_queue_email_incoming
+supervisorctl restart abuseio_queue_email_outgoing
