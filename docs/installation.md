@@ -51,6 +51,26 @@ If you're running PHP7 or later, run:
 ```bash
 pecl install mailparse
 ```
+If you run into this compiler error:
+```bash
+/tmp/pear/temp/mailparse/mailparse.c:34:2: error: #error The mailparse extension requires the mbstring extension!
+ #error The mailparse extension requires the mbstring extension!
+  ^
+Makefile:200: recipe for target 'mailparse.lo' failed
+make: *** [mailparse.lo] Error 1
+ERROR: `make' failed`
+```
+You should do:
+```bash
+vi /usr/include/php/20151012/ext/mbstring/libmbfl/mbfl/mbfilter.h
+```
+Then add the following lines right under `#define MBFL_MBFILTER_H`:
+```c
+#undef HAVE_MBSTRING
+#define HAVE_MBSTRING 1
+```
+And rerun the pecl install command.
+
 If you're running PHP5.6 or older, run:
 
 ```bash
@@ -63,6 +83,7 @@ echo "extension=mailparse.so" > /etc/php5/mods-available/mailparse.ini
 php5enmod mailparse
 php5enmod mcrypt
 ```
+> Note: Replace "php5" in the above command with "php/7.0" if you're running PHP7.
 
 ## Create local user
 We're creating local user, 'abuseio', which will be used to run the application.
