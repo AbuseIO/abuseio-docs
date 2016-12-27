@@ -166,7 +166,6 @@ screen -dmS thread7  bash -c "php artisan migrate:oldversion -s --skipcontacts -
 screen -dmS thread8  bash -c "php artisan migrate:oldversion -s --skipcontacts --skipnetblocks --skipnotes --threaded --threadid=8  --threadsize=1000; exec bash"
 screen -dmS thread9  bash -c "php artisan migrate:oldversion -s --skipcontacts --skipnetblocks --skipnotes --threaded --threadid=9  --threadsize=1000; exec bash"
 screen -dmS thread10 bash -c "php artisan migrate:oldversion -s --skipcontacts --skipnetblocks --skipnotes --threaded --threadid=10 --threadsize=1000; exec bash"
-screen -dmS thread10 bash -c "php artisan migrate:oldversion -s --skipcontacts --skipnetblocks --skipnotes --threaded --threadid=10 --threadsize=1000; exec bash"
 screen -dmS thread11 bash -c "php artisan migrate:oldversion -s --skipcontacts --skipnetblocks --skipnotes --threaded --threadid=11 --threadsize=1000; exec bash"
 screen -dmS thread12 bash -c "php artisan migrate:oldversion -s --skipcontacts --skipnetblocks --skipnotes --threaded --threadid=12 --threadsize=1000; exec bash"
 screen -dmS thread13 bash -c "php artisan migrate:oldversion -s --skipcontacts --skipnetblocks --skipnotes --threaded --threadid=13 --threadsize=1000; exec bash"
