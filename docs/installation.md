@@ -15,7 +15,12 @@
 
 ### Ubuntu
 ```bash
-apt-get install curl git mysql-server apache2 apache2-utils supervisor libapache2-mod-php5 php5 php-pear php5-dev php5-mcrypt php5-mysql php5-pgsql php5-curl php5-intl
+apt-get install curl git mysql-server apache2 apache2-utils libapache2-mod-php5 php5 php-pear php5-dev php5-mcrypt php5-mysql php5-pgsql php5-curl php5-intl
+```
+If you intend to use the supervisor instead of systemd, you will need to install it:
+
+```bash
+apt-get install supervisor
 ```
 
 If you're running PHP7 or later then you must install BCmath, ZIP and MBstring manually, as its no longer a part of the default installation:
@@ -140,21 +145,33 @@ chmod 770 bootstrap/cache/
 ```
 
 
-## Supervisor, logrotate, rsyslog
-These commands will set up supervisor, logrotate and rsyslog for you.
+## Supervisor/systemd, logrotate, rsyslog
+Do NOT use supervisor AND systemd at the same time.
+
+These commands will set up logrotate and rsyslog for you.
 ```bash
 cp -vr /opt/abuseio/extra/etc/* /etc/
 mkdir /var/log/abuseio
 chown syslog:adm /var/log/abuseio
-supervisorctl reread
-/etc/init.d/supervisor restart
 service rsyslog restart
 
 supervisorctl stop abuseio_queue_collector
 supervisorctl stop abuseio_queue_email_incoming
 supervisorctl stop abuseio_queue_email_outgoing
 ```
-> Important: Leave these supervisor jobs stopped until you completed the entire installation process,
+If you are using supervisor:
+
+```bash
+supervisorctl reread
+/etc/init.d/supervisor restart
+```
+Or if you are using systemd:
+
+```bash
+systemctl daemon-reload
+```
+
+> Important: Leave these supervisor or systemd jobs stopped until you completed the entire installation process,
 or you might get a lot of errors in your logs!
 
 > Important: The supervisord worker threads run in daemon mode. This will allow the framework to
@@ -235,6 +252,8 @@ Create file /etc/apache2/sites-available/abuseio.conf containing:
   </Directory>
 </VirtualHost>
 ```
+
+If you are migrating from version 3.x you can add use the ash-abuseio.domain.tld with documentroot /opt/abuseio/public/legacy to provide a nice redirection by converting tokens.
 
 ```bash
 a2ensite abuseio
@@ -340,6 +359,14 @@ Start the framework daemons, after databases have been initialised:
 supervisorctl start abuseio_queue_collector
 supervisorctl start abuseio_queue_email_incoming
 supervisorctl start abuseio_queue_email_outgoing
+```
+
+or with systemd:
+
+```bash
+systemctl start abuseio_queue_collector
+systemctl start abuseio_queue_email_incoming
+systemctl start abuseio_queue_email_outgoing
 ```
 
 ## Cronjobs
