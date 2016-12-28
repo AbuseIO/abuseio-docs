@@ -40,45 +40,36 @@ tuned MySQL, etc will reduce the time required for this migration.
 - create a readonly user to the old abuseio 3.x database. All the data required is stored in the database. The old 
 database wil not need any changes, but if you're bold you can use the old 3.x credentials to the database.
 
-- in the config/database.php file create a copy of the 'mysql' element and name it abuseio3 with the server, 
-user and password to access the database. An example:
+- in the .env file add the information to connect to the old database:
 
 ```php
-    // This is the connections settings
-    'connections' => [
+APP_ENV=production
+APP_DEBUG=false
+APP_KEY=SomeRandomString
+APP_ID=DEFAULT
 
-        // Default, ignore this
-        'sqlite' => [
-            'driver'   => 'sqlite',
-            'database' => storage_path().'/database.sqlite',
-            'prefix'   => '',
-        ],
+DB_HOST=localhost
+DB_DATABASE=abuseio
+DB_USERNAME=root
+DB_PASSWORD=
 
-        // This is your production AbuseIO4 database
-        'mysql' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => env('DB_DATABASE', 'abuseio'),
-            'username'  => env('DB_USERNAME', 'root'),
-            'password'  => env('DB_PASSWORD', 'xxxxxxxxxx'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
+#Used for migrations from Version3:
+V3DB_HOST=localhost
+V3DB_DATABASE=abuseio
+V3DB_USERNAME=root
+V3DB_PASSWORD=
 
-        // This is the driver you will need to add for the migration
-        'abuseio3' => [
-            'driver'    => 'mysql',
-            'host'      => env('DB_HOST', 'localhost'),
-            'database'  => 'abuseio3',
-            'username'  => env('DB_USERNAME', 'root'),
-            'password'  => env('DB_PASSWORD', 'xxxxxxxxxxxx'),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => '',
-            'strict'    => false,
-        ],
+CACHE_DRIVER=file
+SESSION_DRIVER=file
+QUEUE_DRIVER=database
+
+MAIL_DRIVER=smtp
+MAIL_HOST=localhost
+MAIL_PORT=25
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+
 ```
 
 # Preperations (-p / --prepare)
