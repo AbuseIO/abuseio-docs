@@ -44,3 +44,24 @@ supervisorctl restart abuseio_queue_collector
 supervisorctl restart abuseio_queue_email_incoming
 supervisorctl restart abuseio_queue_email_outgoing
 ```
+
+## 3. Notifications are not being sent out
+
+**Symptoms:**
+
+- You have a ticket with valid incidents
+- AND the ticket has not send out any notifications
+- AND the ticket contains valid contact information, including auto_notications to be enabled
+- AND manually triggering notifications work fine
+
+**Possible cause:**
+
+You are using data (or e.g. the provided samples in /extra/notifier-samples/) which hold data which is older then the permitted notification threshold.
+
+This is a configuration setting (main configuration, under notifications.min_lastseen) which defaults to 14 days. This would mean that if the ticket holds only incidents older then 14 days it would continue to collect data but not notify as its considered to old to report. This is expected behaviour to prevent alerts being send out that are useless. If the problem still exist at some point a incident would be reported within the threshold for notifcations.
+
+**Solution:**
+
+Non are required, as this is normal behaviour. However when testing the system and the need to use older samples, e.g. from the supplied samples directory, you will need to change this threshold e.g. to 10 years. But be aware you should set this back when going production. Best way to go is to set your env to 'testing' and set the config/testing/main.php with the desired settings. Do not use this in production unless you want to notify old data!
+
+Another options would be to update the samples to reflect newer dates, however that would be more work.
