@@ -187,7 +187,9 @@ a bug report.
 ### Postfix
 Configure delivery using transport maps
 
-> Make sure 'isp.local' is in your local domains.
+> Make sure the domain you want to use (e.g.: 'isp.local') is in your local domains. The 'isp.local' reference is just a placeholder
+> which you should replace with your own domain. Please make sure you can actually receive e-mail on this domain (e.g. MX records,
+> open firewall, etc). By using this transport any e-mail send to notifier@isp.local will be pushed (pipe) to the AbuseIO Framework.
 
 Create file /etc/postfix/transport:
 ```bash
