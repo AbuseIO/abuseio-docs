@@ -403,3 +403,42 @@ Also if you have changed the username and/or group where you run AbuseIO under, 
 config `/opt/abuseio/config/app.php` as well.
 
 Creating a copy in the $ENV folder with the example above allows you to override the defaults specified in the original file. Only the variables in your override config which you modify will actually be used. If the default config contains an option called 'bla', and you remove it from your override config, then the default option will be used. So, you are not required to copy the entire file, but you can just copy the elements needed into a new file. Using a full copy can help simplify your configuration.
+
+## Collector configuration
+
+By default we have included all the known (stable) collectors for AbuseIO which are *disabled* by default. You will need to configure them
+before you can use them, as information is needed (e.g. API keys, URLs, etc) before it can work.
+
+These parsers can be found in your installation directory in the subfolder './vendor/abuseio/collector-*/'. In the parser folder
+you find the code and its default configuration. Do NOT change the default configuration here, if you want to override the 
+default configuration then make a copy the config file (e.g. Spamcop.php) to your local config repository 
+(./config/production/parsers) and edit that file.
+
+## Parser configuration
+
+By default we have included all the known (stable) parsers for AbuseIO which are enabled by default. These parsers can be found in your
+installation directory in the subfolder './vendor/abuseio/parser-*/'. In the parser folder you find the code and its default configuration.
+do NOT change the default configuration here, if you want to override the default configuration then make a copy the config file (e.g. 
+Spamcop.php) to your local config repository (./config/production/parsers) and edit that file.
+
+In the supplied default configuration you will find that all the hooks/triggers might not be fully complete, as the developers have other
+sources than you. If you find additional senders, matches, etc then consider letting us know so we can update the default configuration.
+
+The default configuration should get you started and with the sender- and body mapping the parser tells AbuseIO for which sources it can be
+used. For example: Spamcop has in its configuration a sender mapping for '/@reports.spamcop.net/'. If the notifier address receives an 
+e-mail from that address that matches to this regex then that Spamcop parser is used. Please be very carefull when editing these mappings
+and make sure you use the correct regular expression and do not create duplicates.
+
+## Receiving abuse notifications (using notifier)
+
+Once you have completed all the steps in the installation document you can start receiving abuse notifications from reports. You are 
+required to setup some kind of forwarding so that these reports will end up in AbuseIO.
+
+You have created an e-mail address 'notifier@isp.local' (which is a placeholder, which really would be something like notifier@amazon.com)
+where you can receive your reports to. Useally you would get your reports in abuse@isp.local (or abuse@amazon.com) and you will need to
+forward/redirect (which modifying the message!) the e-mails you want handled by AbuseIO to the notifier@isp.local address.
+
+## Failed Jobs
+
+If the notifier (or collector) fails, then the job that was running it will be put into the failed queue. You can check the logs, fix
+the problem and retry that job (or delete it) if needed. 
