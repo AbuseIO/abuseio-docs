@@ -1,6 +1,6 @@
 # Common AbuseIO problems / FAQ
 
-## 1. Supervisord services not running (properly)
+## 1. Services not running (properly)
 
 **Symptoms:**
 
@@ -11,13 +11,13 @@
 
 **Possible cause:**
 
-Supervisord services not running. In most cases, the supervisor was asked to start after installation, but it was not able to since the database was not fully installed yet.
+Services not running, like the systemd, supervisor or other service method used during installation. In most cases, the service was asked to start after installation, but it was not able to since the database was not fully installed yet.
 
 Once an e-mail has been received, it is put into a queue to handle and the MTA part has been completed. The MTA can return an 200 OK message to the sender. If the supervisord queue daemons are not running, no jobs are picked up from the queue and remain there until worker process has been started.
 
 **Solution:**
 
-Restart the supervisord services (currently 3) or the entire supervisord daemon, which is safe to do if this is system
+Restart the services (currently 3) or the entire supervisord daemon, which is safe to do if this is system
 is dedicated to AbuseIO. After restarting it you will see in the /var/log/abuseio/queue* files the workers to pick up
 work and start handling the data from the received e-mails.
 
