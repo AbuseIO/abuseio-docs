@@ -34,7 +34,7 @@ In addition you will need to install an MTA. The examples provided are based on 
 ### CentOS
 Still a work in progress, but minimal:
 ```bash
-php-bcmath
+php-bcmath, supervisor
 ```
 
 ### Composer
@@ -145,30 +145,37 @@ chmod 770 bootstrap/cache/
 ```
 
 
-## Supervisor/systemd, logrotate, rsyslog
+## Systemd, logrotate, rsyslog
+
+```bash
+mkdir /var/log/abuseio
+chown syslog:adm /var/log/abuseio
+cp -vr /opt/abuseio/extra/etc/logrotate.d/* /etc/logrotate.d/
+cp -vr /opt/abuseio/extra/etc/rsyslog.d/* /etc/rsyslog.d/
+service rsyslog restart
+```
+
+```bash
+cp -vr /opt/abuseio/extra/etc/systemd/* /etc/
+systemctl daemon-reload
+```
+
+## Supervisor, logrotate, rsyslog
 Do NOT use supervisor AND systemd at the same time.
 
-These commands will set up logrotate and rsyslog for you.
 ```bash
 cp -vr /opt/abuseio/extra/etc/* /etc/
 mkdir /var/log/abuseio
 chown syslog:adm /var/log/abuseio
 service rsyslog restart
-
-supervisorctl stop abuseio_queue_collector
-supervisorctl stop abuseio_queue_email_incoming
-supervisorctl stop abuseio_queue_email_outgoing
 ```
-If you are using supervisor:
 
 ```bash
 supervisorctl reread
 /etc/init.d/supervisor restart
-```
-Or if you are using systemd:
-
-```bash
-systemctl daemon-reload
+supervisorctl stop abuseio_queue_collector
+supervisorctl stop abuseio_queue_email_incoming
+supervisorctl stop abuseio_queue_email_outgoing
 ```
 
 > Important: Leave these supervisor or systemd jobs stopped until you completed the entire installation process,
@@ -389,8 +396,9 @@ Once bind is installed, you only need to update your resolver configuration to u
 ## Core configuration
 
 Once completed there are a few settings you will need to configure. First off, be aware that by default your
-queue runners are running in --daemon mode (the services from supervisord). This is great for reducing CPU load, and it is a lot
-faster. However, configuration changes are only read when the supervisord services start. So, if you change the configuration then you will need to restart the supervisord services too!
+queue runners are running in --daemon mode (the services from supervisord or systemd). This is great for reducing CPU load, and it 
+is a lot faster. However, configuration changes are only read when the supervisord/systemd services start. So, if you change the
+configuration then you will need to restart the supervisord services too!
 
 Copy `/opt/abuseio/config/main.php` to the chosen environment folder `/opt/abuseio/config/$ENV/`.
 For example, if you want to configure you production environment do:
