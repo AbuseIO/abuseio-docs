@@ -417,10 +417,10 @@ Creating a copy in the $ENV folder with the example above allows you to override
 By default we have included all the known (stable) collectors for AbuseIO which are *disabled* by default. You will need to configure them
 before you can use them, as information is needed (e.g. API keys, URLs, etc) before it can work.
 
-These parsers can be found in your installation directory in the subfolder './vendor/abuseio/collector-*/'. In the parser folder
+These collectors can be found in your installation directory in the subfolder './vendor/abuseio/collector-*/'. In the collector folder
 you find the code and its default configuration. Do NOT change the default configuration here, if you want to override the 
-default configuration then make a copy the config file (e.g. Spamcop.php) to your local config repository 
-(./config/production/parsers) and edit that file.
+default configuration then make a copy the config file (e.g. Rbl.php) to your local config repository 
+(./config/production/collector) and edit that file.
 
 ## Parser configuration
 
