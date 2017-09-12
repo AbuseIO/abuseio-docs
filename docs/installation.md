@@ -354,7 +354,7 @@ The default installation does not create an admin user unless you seed the demo 
 
 ```
 cd /opt/abuseio
-php artisan user:create --email admin@isp.local
+php artisan user:create admin@isp.local
 php artisan role:assign --role admin --user admin@isp.local
 ```
 
