@@ -20,6 +20,7 @@ pages:
 - 'User Guide':
     - 'Data collection': 'data_collection.md'
     - 'Notifications': 'notifications.md'
+    - 'Subscribing to feeds': 'subscribing_to_feeds.md'
 - 'Development Guides':
     - 'Parsers': 'development_parsers.md'
 - 'About':
