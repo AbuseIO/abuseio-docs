@@ -156,3 +156,26 @@ account to link your company details:
 - Enter the e-mail address under 'notification emails' where you want to receive notifications
 - Click on 'send confirmation' to receive the verification e-mail
 - Follow the instructions in the confirmation e-mail
+
+### Microsoft SNDS
+
+Totally free, and you can register whole ASN's up to single IP's of your mailservers. It does  require a Live account to link your company details. _IPv6 is not supported at all (!)_ Please note that for some reason the 'whois access' for SNDS is very limited, so it might take a VERY long time before ASN or CIDR requests are approved. Authorization addresses are chosen automatically by an algorithm based on the input requested, either an IP range or an Autonomous System Number (ASN). 
+
+For IP or IP range, it uses two data sources, reverse DNS and WHOIS, each of which can return results independently. For an ASN, SNDS will use WHOIS similarly to how it does for IPs, in that it will authorize any email addresses found in the ASN record maintained by the registrars. Details can be found here: https://postmaster.live.com/snds/faq.aspx#AddressChoosing  
+
+- Create a Microsoft Live Account  with your company / abusedesk information
+- Visit https://postmaster.live.com/snds and click login. Login with your account.
+- Click 'Request Access'
+- Enter your ASN (preferred) or your IP(s)
+- Now pray if your verification will continue, if not try again ...
+- In step 2 select the e-mail address where you receive the validation e-mail
+- If you are _NOT_ the IP/Owner you have a textbox where you can enter a description why you need/want this access for the IP/Owner to review. If you are the owner, you can e-mail validate yourself and leave the box empty.
+- Click 'Send mail to the chosen address'
+- Follow the instructions in the confirmation e-mail
+
+### Spamcop
+
+### SpamExperts
+
+This is a internal feedback loop for SE Customers. Please contact your sales representative
+or support desk and ask for a AbuseIO feed. They will provide information how to setup this feed.
