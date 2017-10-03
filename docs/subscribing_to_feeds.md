@@ -143,3 +143,16 @@ notifications about phishing and malware attacks where they are performing a
 takedown for one their customers. Registering your details will allow them to
 simplify contacts and allows your to directly pass the notifications onto AbuseIO.
 For a full ISP feed you can contact sales@netcraft.com for details or a trial.
+
+### Google Safe Browsing
+
+Totally free, but you can only register for an ASN feed and requires a Gmail
+account to link your company details:
+
+- Create a Gmail account with your company / abusedesk information
+- Visit https://www.google.com/safebrowsing/alerts/ and login with that account
+- Click 'Add AS', enter your ASN and click continue
+- Double check if your number, name and contact matches your company information as it happens frequently that information is outdated!
+- Enter the e-mail address under 'notification emails' where you want to receive notifications
+- Click on 'send confirmation' to receive the verification e-mail
+- Follow the instructions in the confirmation e-mail
