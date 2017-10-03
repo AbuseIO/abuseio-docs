@@ -2,6 +2,10 @@
 
 This document will help how you to subscribe to abuse feeds and is in no way meant to be a walk-through, thus some thinking and common sense is required.
 
+# Preface
+
+In general this document is meant for Internet Providers and large networks (Network Operators) as a guide into collecting data from abuse feeds. Unless you actually _own_ the IP Space and/or network (ASN) it will be very hard to register these feeds. If you do not own the IP space please consult your internet provider first before trying to register for any kind of feeds. 
+
 # Getting started
 
 ## Definitions
@@ -127,4 +131,3 @@ ISPLOCAL Inc.
 ### Shadowserver
 
 For both the ASN as IP registration you can use the REGISTRATION-TEMPLATE and send it to request_report@shadowserver.org
-
