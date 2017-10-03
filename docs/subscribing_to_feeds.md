@@ -4,7 +4,7 @@ This document will help how you to subscribe to abuse feeds and is in no way mea
 
 # Preface
 
-In general this document is meant for Internet Providers and large networks (Network Operators) as a guide into collecting data from abuse feeds. Unless you actually _own_ the IP Space and/or network (ASN) it will be very hard to register these feeds. If you do not own the IP space please consult your internet provider first before trying to register for any kind of feeds. 
+In general this document is meant for Internet Providers and large networks (Network Operators) as a guide into collecting data from abuse feeds. Unless you actually _own_ the IP Space and/or network (ASN) it will be very hard to register these feeds. If you do not own the IP space please consult your internet provider first before trying to register for any kind of feeds.
 
 # Getting started
 
@@ -85,7 +85,7 @@ We would request to receive your feed(s) / automated notifications on the dedica
 
 {start ASN part}
 
-Out company is operating under the Network ASN AS-ABUSEIO / AS112911.
+Our company is operating under the Network ASN AS-ABUSEIO / AS112911.
 
 {end ASN part}
 
@@ -130,4 +130,16 @@ ISPLOCAL Inc.
 
 ### Shadowserver
 
-For both the ASN as IP registration you can use the REGISTRATION-TEMPLATE and send it to request_report@shadowserver.org
+For both the ASN as IP registration you can use the REGISTRATION-TEMPLATE and
+send it to request_report@shadowserver.org
+
+### Netcraft
+
+For both the ASN as IP registration you can use the REGISTRATION-TEMPLATE and
+send it to takedown@netcraft.com.
+
+Please note that Netcraft is a commercial company and will only send
+notifications about phishing and malware attacks where they are performing a
+takedown for one their customers. Registering your details will allow them to
+simplify contacts and allows your to directly pass the notifications onto AbuseIO.
+For a full ISP feed you can contact sales@netcraft.com for details or a trial.
