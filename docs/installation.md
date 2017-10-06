@@ -105,6 +105,19 @@ addgroup www-data abuseio
 ```
 > You will need to restart Apache and Postfix in this example to make your changes active!
 
+## Post-install requirements
+
+### MySQL 5.7+ default change
+
+If you are running MySQL 5.7 or higher, the default value for a ZERO_DATE is no longer accepted. Laraval
+still uses ZERO_DATE instead of NULL and running database migration will result into errors! Therefor you
+_MUST_ disable strict mode:
+
+_/etc/mysql/conf.d/disable_strict_mode.cnf_
+```bash
+[mysqld]
+sql_mode=IGNORE_SPACE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
 
 # Installation
 
