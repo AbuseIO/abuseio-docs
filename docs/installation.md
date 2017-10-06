@@ -25,6 +25,10 @@ apt-get install supervisor
 
 In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
 
+```bash
+apt-get install postfix
+```
+
 ### CentOS
 Still a work in progress, but minimal:
 ```bash
