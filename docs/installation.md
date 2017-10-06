@@ -15,18 +15,12 @@
 
 ### Ubuntu
 ```bash
-apt-get install curl git mysql-server apache2 apache2-utils libapache2-mod-php5 php5 php-pear php5-dev php5-mcrypt php5-mysql php5-pgsql php5-curl php5-intl
+apt-get install curl git mysql-server apache2 apache2-utils libapache2-mod-php7.0 php7.0 php-pear php7.0-dev php7.0-mcrypt php7.0-mysql php7.0-pgsql php7.0-curl php7.0-intl php7.0-bcmath php7.0-mbstring php7.0-zip
 ```
 If you intend to use the supervisor instead of systemd, you will need to install it:
 
 ```bash
 apt-get install supervisor
-```
-
-If you're running PHP7 or later then you must install BCmath, ZIP and MBstring manually, as its no longer a part of the default installation:
-
-```bash
-apt-get install php7.0-bcmath php7.0-mbstring php-zip
 ```
 
 In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
@@ -84,9 +78,9 @@ pecl install mailparse-2.1.6
 On some systems, the above command fails. If it does, try adding -Z after 'install'.
 
 ```bash
-echo "extension=mailparse.so" > /etc/php5/mods-available/mailparse.ini
-php5enmod mailparse
-php5enmod mcrypt
+echo "extension=mailparse.so" > /etc/php/7.0/mods-available/mailparse.ini
+phpenmod mailparse
+phpenmod mcrypt
 ```
 > Note: Replace "php5" in the above command with "php/7.0" if you're running PHP7.
 
