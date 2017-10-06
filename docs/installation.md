@@ -117,6 +117,12 @@ _/etc/mysql/conf.d/disable_strict_mode.cnf_
 sql_mode=IGNORE_SPACE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 ```
 
+restart MySQL after:
+
+```bash
+systemctl restart mysql
+```
+
 # Installation
 
 You can install AbuseIO by downloading a tarball or installing with Composer. Either way will work fine.
