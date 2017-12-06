@@ -32,10 +32,6 @@
 
 # Feature Documentation
 
-[API Documentation](api.md)
-
-[Delegation](delegation.md)
-
 # Development
 
 [Development Guide](development.md)
