@@ -79,6 +79,10 @@ Found incomplete or incorrect documentation? Then please create an issue to repo
 
 # Feature Documentation
 
+[API Documentation](api.md)
+
+[Delegation](delegation.md)
+
 # Development
 
 [Development Guide](development.md)
