@@ -9,6 +9,14 @@
 + PHP 5.5.9+ (Both CLI as apache module)
 + (__optional__) Local resolving nameserver (Bind, pDNSRecursor) ([more info](#resolving))
 
+# Automated installation
+
+This documentation will guide your thru a basic installation. However if you like to do automation with Docker or Ansible, you might
+want to check out the following repositories:
+
+http://www.github.com/abuseio/abuseio-ansible/
+http://www.github.com/abuseio/abuseio-docker/
+
 # Preparation
 
 ## Pre-install Requirements
