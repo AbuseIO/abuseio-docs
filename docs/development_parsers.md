@@ -26,6 +26,11 @@ and you will need to reload them regurally to make sure it reflects your develop
 are developing we'd suggest removing the -daemon option from all the supervisored processes so
 all your changes are updated in realtime as much as possible.
 
+In addition adding samples is compulsary! This is the only way to know if a parser still works.
+Adding samples are static files, if you are using old samples with an old timestamp the aggregator
+might refuse to accept them. Make sure your samples have up-to-date timestamps or update the 
+configuration to accept very old reports.
+
 Finally let us know that you are working on something, this way we can help you and make sure
 others are not starting on duplicate work. We have an IRC channel were already a lot of
 developers are chatting and could be of help while you are developing on your own.
