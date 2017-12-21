@@ -193,6 +193,7 @@ supervisorctl reread
 supervisorctl stop abuseio_queue_collector
 supervisorctl stop abuseio_queue_email_incoming
 supervisorctl stop abuseio_queue_email_outgoing
+supervisorctl stop abuseio_queue_delegation
 ```
 
 > Important: Leave these supervisor or systemd jobs stopped until you completed the entire installation process,
