@@ -112,6 +112,7 @@ addgroup postfix abuseio
 addgroup www-data abuseio
 ```
 > You will need to restart Apache and Postfix in this example to make your changes active!
+> When you're running php-fpm as www-data, you need to restart that as well.
 
 
 # Installation
