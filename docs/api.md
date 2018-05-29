@@ -221,7 +221,8 @@ Updating a brand:
 | POST   | http://{APP_URL}/api/v1/contacts      | Create a new contact                |
 | PUT    | http://{APP_URL}/api/v1/contacts/{id} | Update the contact with id {id}     |
 | DELETE | http://{APP_URL}/api/v1/contacts/{id} | Delete the contact with id {id}     |
-
+| GET    | http://{APP_URL}/api/v1/contacts/search/{email} | Return all contacts with the specified email |
+| GET    | http://{APP_URL}/api/v1/contacts/{id}/anonymize/{randomness} | Anonymizes the personal data of the contact, randomness is needed for hashing |
  
 Creating a new contact:
 
@@ -282,6 +283,33 @@ Updating a contact
         "name":"James Marks Jr.",
         "email":"joey90@example.com",
         "api_host":"http:\/\/koepp.com\/quibusdam-ea-aut-qui-magnam.html",
+        "auto_notify":false,
+        "enabled":false,
+        "account_id":1
+      },
+      "message":
+      {
+        "code":"SUCCESSFULL",
+        "message":"success",
+        "http_code":200,
+        "success":true
+      }
+    }
+
+Anonymizing a contact
+
+    curl -X GET -H "Content-Type: application/json" \
+    -H "X-API-TOKEN: 1a69f701-200e-411c-9244-6a3c15a3cd97" \
+    http://localhost:8080/api/v1/contacts/3/anonymize/asjadjhadshjas
+    
+    {
+      "data":
+      {
+        "id":3,
+        "reference":"9d61121e846514cfa1c465164f3760f5",
+        "name":"4a7782521ddf9050a17508bb6cc53938",
+        "email":"6d6bb95e354d448449709c0d61dbc54f@abuseio.test",
+        "api_host":"",
         "auto_notify":false,
         "enabled":false,
         "account_id":1
@@ -659,6 +687,7 @@ class, type, contact or a combination) by using the search method.
 | GET    | http://{APP_URL}/api/v1/tickets/{id}/notify | Send out notifications to the contacts of the ticket with id {id} |
 | POST   | http://{APP_URL}/api/v1/tickets/syncstatus| Sync the status with the matching ticket |
 | POST   | http://{APP_URL}/api/v1/tickets/synccontactstatus| Sync the contact status with the matching ticket |
+| GET    | http://{APP_URL}/api/v1/tickets/{id}/anonymize/{email}/{randomness}| Anonymize the tickets contact data related to the email address, hashed using the randomness data |
 
 Note: you can create a new ticket using the create method, but this will make a ticket without events, it is preferred that tickets are created using incidents.
 
@@ -832,6 +861,53 @@ With the use of the API you can notify all the contacts of the ticket.
       "message":"success",
       "http_code":200,
       "success":true
+    }
+
+#### Anonymnize the ticket
+You can use the API to anonymize a specific contact in the ticket
+
+    curl -X GET -H "Content-Type: application/json" \
+    -H "X-API-TOKEN: 1a69f701-200e-411c-9244-6a3c15a3cd97" \ 
+    http://localhost:8080/api/v1/tickets/4/anonymize/mcdermott.wilhelm@example.org/jkhsjdfshjksdf
+    
+    {
+      "data":
+      {
+        "id":4,
+        "ip":"2d92:334e:a0d4:d2bb:41fe:830b:e3da:f1a",
+        "domain":"gislason.com",
+        "class_id":"OPEN_NTP_SERVER",
+        "type_id":"ESCALATION",
+        "ip_contact_account_id":1,
+        "ip_contact_reference":"4ed26a87fdbe85ebfc3d81d1cef52dbd",
+        "ip_contact_name":"bd55873172ed21da50132879ea803fa3",
+        "ip_contact_email":"2232746190322f210edb63849a1fd087@abuseio.test",
+        "ip_contact_api_host":"",
+        "ip_contact_auto_notify":false,
+        "ip_contact_notified_count":0,
+        "domain_contact_account_id":1,
+        "domain_contact_reference":"4ed26a87fdbe85ebfc3d81d1cef52dbd",
+        "domain_contact_name":"bd55873172ed21da50132879ea803fa3",
+        "domain_contact_email":"2232746190322f210edb63849a1fd087@abuseio.test",
+        "domain_contact_api_host":"",
+        "domain_contact_auto_notify":false,
+        "domain_contact_notified_count":0,
+        "status_id":"OPEN",
+        
+        ...
+        
+        "remote_ticket_id":"",
+        "remote_ash_link":"",
+        "events": [...],
+        "notes": [...]
+      } 
+      "message":
+      {
+        "code":"SUCCESSFULL",
+        "message":"success",
+        "http_code":200,
+        "success":true
+      }
     }
     
 ### Users

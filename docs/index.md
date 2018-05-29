@@ -83,6 +83,8 @@ Found incomplete or incorrect documentation? Then please create an issue to repo
 
 [Delegation](delegation.md)
 
+[GDPR functionality](gdpr.md)
+
 # Development
 
 [Development Guide](development.md)
