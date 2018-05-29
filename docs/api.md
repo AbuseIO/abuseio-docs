@@ -935,3 +935,11 @@ Currently you can only list and show an user
 | GET    | http://{APP_URL}/api/v1/users      | List all users                   |
 | GET    | http://{APP_URL}/api/v1/users/{id} | Show the user with id {id}       |
 
+### Other calls
+
+#### GDPR
+
+| Method | Endpoint                                 | Description                         |
+|--------|------------------------------------------|-------------------------------------|
+| GET    | http://{APP_URL}/api/v1/gdpr/anonymize/{email} | Anonymizes both Tickets and Contacts related to the email address          |
+

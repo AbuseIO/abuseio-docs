@@ -15,5 +15,7 @@ You can use php artisan to create a report and to anonymize all contacts / ticke
 Only the anonymize methods are exported through the api, you can query tickets and contacts through the search api call.
 For specifics see the [API Documentation](api.md)
 
+There is an anonymize API call for both Tickets and Contacts, however you can also call the gdpr/anonymize API call, which will anonymize both Tickets and Contacts in one call.
+
 ### UI
 not yet implemented
