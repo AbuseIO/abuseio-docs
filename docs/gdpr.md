@@ -18,4 +18,4 @@ For specifics see the [API Documentation](api.md)
 There is an anonymize API call for both Tickets and Contacts, however you can also call the gdpr/anonymize API call, which will anonymize both Tickets and Contacts in one call.
 
 ### UI
-not yet implemented
+You may anonymize a customer's personal information by going to a customer screen and press the "Anonymize" button. After confirming the action, the customer and all related tickets will be anonymized.
