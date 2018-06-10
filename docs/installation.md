@@ -3,7 +3,7 @@
 # System Requirements
 
 + 64-bit Linux based distribution
-+ MTA (Postfix 2.9.1+, Exim 4.76+)
++ MTA (Postfix 2.9.1+, Exim 4.76+) or Fetchmail
 + Web server software (Apache 2.22+ or Nginx 1.1.19+)
 + Database backend (MySQL 5.5+, Postgres 9.1+)
 + PHP 5.5.9+ (Both CLI as apache module)
@@ -37,7 +37,7 @@ If you're running PHP7 or later then you must install BCmath, ZIP and MBstring m
 apt-get install php7.0-bcmath php7.0-mbstring php-zip
 ```
 
-In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
+In addition you will can install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want. Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox.
 
 ### CentOS
 Still a work in progress, but minimal:
@@ -236,6 +236,18 @@ Restart postfix:
 /etc/init.d/postfix restart
 ```
 
+### Fetchmail
+Configure delivery using a POP3- or IMAP-mailbox.
+
+Create a fetchmail configuration for your local abuseio user by creating a file ```.fetchmailrc``` in your local users home-directory with the following content:
+```
+poll your.mail.server proto imap user "your-username" pass "your-password" mda "/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive"
+```
+
+Start fetchmail as a deamon for your local user, which checks it's mailbox every 5 minutes (300 seconds):
+```bash
+su -c "fetchmail -d 300 -s" abuseio
+```
 
 ## Webserver
 
