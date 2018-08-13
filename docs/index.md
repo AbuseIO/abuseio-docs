@@ -6,6 +6,7 @@
 ## Get involved
 ## Sponsors
 
+
 # User Documentation
 
 ## Getting Started
@@ -29,6 +30,7 @@
 [License](license.md)
 
 [Release Notes](release_notes.md)
+
 
 # Feature Documentation
 
