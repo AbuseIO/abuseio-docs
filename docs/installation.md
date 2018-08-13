@@ -14,8 +14,15 @@
 This documentation will guide your thru a basic installation. However if you like to do automation with Docker or Ansible, you might
 want to check out the following repositories:
 
+Ansible:
+```
 http://www.github.com/abuseio/abuseio-ansible/
+```
+
+Docker:
+```
 http://www.github.com/abuseio/abuseio-docker/
+```
 
 # Preparation
 
