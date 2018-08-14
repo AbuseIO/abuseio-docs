@@ -53,3 +53,30 @@ Now you will be able to connect to your instance of AbuseIO via a web browser on
 ```
 http://YOUR_IP_ADDRESS:8000
 ```
+
+
+## Configuration
+
+### Reading emails
+
+The recommended method of retreiving emails from a mail server is using fetchmail.
+
+The fetchmail configuraton file can be found in the configuration directory used when running the docker container.
+
+```bash
+cd /var/abuseio_data/config;
+nano fetchmailrc
+```
+
+Edit the configuration to your desire. If you mess up, the default configuration can be found below:
+```
+# set username
+set postmaster "abuseio"
+# set polling time (5 minutes)
+set daemon 300
+
+# gmail pop3 example
+poll pop.gmail.com with proto POP3
+   user 'my.abuse.gmail.account@gmail.com' there with password 'supersecret' is abuseio here options ssl
+mda "/usr/bin/procmail -m /etc/procmailrc"
+```
