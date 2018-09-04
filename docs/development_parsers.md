@@ -22,7 +22,7 @@ help you with the integration of it.
 
 Also when working with parsers (or any kind of development) you need to be aware that Laravel
 caches the framework. Therefore, classes, autoloaders, but also configuration files are cached
-and you will need to reload them regurally to make sure it reflects your development. If you
+and you will need to reload them regularly to make sure it reflects your development. If you
 are developing we'd suggest removing the '-daemon' option from all the supervisored processes so
 all your changes are updated in realtime as much as possible.
 
@@ -32,8 +32,7 @@ might refuse to accept them. Make sure your samples have up-to-date timestamps o
 configuration to accept very old reports.
 
 Finally, let us know that you are working on something. This way we can help you and make sure
-others are not starting on duplicate work. We have an IRC channel were already a lot of
-developers are chatting and could be of help while you are developing on your own.
+others are not starting on duplicate work. We have an IRC channel where developers are chatting, and could be of help while you are developing on your own.
 
 # Building a parser (or collector)
 
@@ -80,13 +79,19 @@ mkdir parser-myfirst/src
 touch parser-myfirst/src/Myfirst.php
 mkdir parser-myfirst/config
 touch parser-myfirst/config/Myfirst.php
-                            ^^^^^^^^^^^ First letter upper, the rest lowercase
-      ^^^^^^^^^^^^^^ all lower case
+                            ^^^^^^^^^^^ First letter uppercase, the rest lowercase
+      ^^^^^^^^^^^^^^ All lowercase
 ```
 
 Now have a look at these two examples:
+
+```
 https://github.com/AbuseIO/parser-arf/blob/master/config/Arf.php
+```
+
+```
 https://github.com/AbuseIO/parser-arf/blob/master/src/Arf.php
+```
 
 For the parser to be included at all you need a minimum of having the namespace, Incident model 
 and the class name extended properly. That sounds a lot, but actually it's just this:
@@ -204,9 +209,13 @@ the 'parser-common' class which is extended on your own Myfirst class. It
 contains a lot of methods which at some point should be documented in full, but
 if you look at these files:
 
+```
 https://github.com/AbuseIO/parser-common/blob/master/src/Factory.php
+```
 
+```
 https://github.com/AbuseIO/parser-common/blob/master/src/Parser.php
+```
 
 And it will give you a general impression on what is already available in sense of creating work dirs, storing
 data and doing validations. If you look back at the ARF example shown in the beginning you'd have a good 
