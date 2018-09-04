@@ -24,11 +24,6 @@ Docker:
 http://www.github.com/abuseio/abuseio-docker/
 ```
 
-See docker installation and configuration instructions below:
-
-[a relative link](installation_via_docker.md)
-
-
 # Preparation
 
 ## Pre-install Requirements
