@@ -12,7 +12,7 @@ In general this document is meant for Internet Providers and large networks (Net
 
 ASN: Autonomous System Number
 PI: Provider Independent IP Space
-PA: Privider Assigned IP Space
+PA: Provider Assigned IP Space
 RIR:
 LIR:
 
