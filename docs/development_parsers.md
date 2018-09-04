@@ -79,13 +79,19 @@ mkdir parser-myfirst/src
 touch parser-myfirst/src/Myfirst.php
 mkdir parser-myfirst/config
 touch parser-myfirst/config/Myfirst.php
-                            ^^^^^^^^^^^ First letter upper, the rest lowercase
-      ^^^^^^^^^^^^^^ all lower case
+                            ^^^^^^^^^^^ First letter uppercase, the rest lowercase
+      ^^^^^^^^^^^^^^ All lowercase
 ```
 
 Now have a look at these two examples:
+
+```
 https://github.com/AbuseIO/parser-arf/blob/master/config/Arf.php
+```
+
+```
 https://github.com/AbuseIO/parser-arf/blob/master/src/Arf.php
+```
 
 For the parser to be included at all you need a minimum of having the namespace, Incident model 
 and the class name extended properly. That sounds a lot, but actually it's just this:
@@ -203,9 +209,13 @@ the 'parser-common' class which is extended on your own Myfirst class. It
 contains a lot of methods which at some point should be documented in full, but
 if you look at these files:
 
+```
 https://github.com/AbuseIO/parser-common/blob/master/src/Factory.php
+```
 
+```
 https://github.com/AbuseIO/parser-common/blob/master/src/Parser.php
+```
 
 And it will give you a general impression on what is already available in sense of creating work dirs, storing
 data and doing validations. If you look back at the ARF example shown in the beginning you'd have a good 
