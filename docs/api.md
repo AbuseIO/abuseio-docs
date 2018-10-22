@@ -426,9 +426,9 @@ Note: As you can see in both outputs, the returned domain json also includes the
 
 ### Incidents
 
-Incidents are used as a internal model and aren't saved to the database. They are converted to tickets and/or events.
-Because the models aren't saved to the database, you can only create an incident.
-This model is used by AbuseIO to delegate events to other child instances.
+Incidents are an internal model and aren't saved to the database, AbuseIO converts them to events.
+Because Incidents aren't saved to the database, you can only create them.
+They are used by AbuseIO to delegate events to other instances.
 
 #### Model
 
