@@ -23,7 +23,7 @@ All the API methods are reachable on the base endpoint
 
 ### Making a request
 
-When making an API request you to send an API token, each account has it's own token, so you can use the api as a specific account.
+When making an API request you need to send an API token, each account has it's own token, so you can use the api for a specific account.
 
 **Important: currently this is only implemented in the ticket model, all other models need to use the system accounts token**
 
