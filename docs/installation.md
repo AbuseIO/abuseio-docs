@@ -115,6 +115,12 @@ We're creating local user, 'abuseio', which will be used to run the application.
 ```bash
 adduser abuseio
 ```
+
+Please make sure that your abuseio user has the default group into abuseio. Apparently it might be abuseio:users instead:
+```
+usermod -g abuseio abuseio
+```
+
 Then add your Apache user and MTA user to the 'abuseio' group.  
 Ubuntu defaults would then be:
 
@@ -239,7 +245,7 @@ newaliases
 Add this to /etc/postfix/master.cf:
 ```bash
 notifier  unix  -       n       n       -       -       pipe
- flags=Rq user=abuseio argv=/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive
+ flags=Rq user=abuseio:abuseio argv=/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive
 
 ```
 
