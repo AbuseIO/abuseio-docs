@@ -65,3 +65,19 @@ This is a configuration setting (main configuration, under notifications.min_las
 Non are required, as this is normal behaviour. However when testing the system and the need to use older samples, e.g. from the supplied samples directory, you will need to change this threshold e.g. to 10 years. But be aware you should set this back when going production. Best way to go is to set your env to 'testing' and set the config/testing/main.php with the desired settings. Do not use this in production unless you want to notify old data!
 
 Another options would be to update the samples to reflect newer dates, however that would be more work.
+
+## 4. Services not running (Systemd)
+
+**Symptoms:**
+
+- Your systemd jobs won't start at all and no errors are logged.
+- You get an error `Failed to start abuseio_queue_*.service: Unit not found.`.
+
+**Possible cause:**
+
+You have invalid dependancies in the service file. This is most likely because you are using CentOS/RedHat/etc which uses different service names than Debian/Ubuntu.
+
+**Solution:**
+
+Change the `Requires=` line in your systemd unit to `Requires=mariadb.service`.
+
