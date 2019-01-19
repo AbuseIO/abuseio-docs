@@ -3,7 +3,7 @@
 # System Requirements
 
 + 64-bit Linux based distribution
-+ MTA (Postfix 2.9.1+, Exim 4.76+)
++ MTA (Postfix 2.9.1+, Exim 4.76+) or Fetchmail
 + Web server software (Apache 2.22+ or Nginx 1.1.19+)
 + Database backend (MySQL 5.5+, Postgres 9.1+)
 + PHP 5.5.9+ (Both CLI as apache module)
@@ -14,8 +14,20 @@
 This documentation will guide your thru a basic installation. However if you like to do automation with Docker or Ansible, you might
 want to check out the following repositories:
 
+Ansible:
+```
 http://www.github.com/abuseio/abuseio-ansible/
+```
+
+Docker:
+```
 http://www.github.com/abuseio/abuseio-docker/
+```
+
+See docker installation and configuration instructions below:
+
+[a relative link](installation_via_docker.md)
+
 
 # Preparation
 
@@ -36,6 +48,8 @@ In addition you will need to install an MTA. The examples provided are based on 
 ```bash
 apt-get install postfix
 ```
+
+In addition you will can install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want. Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox.
 
 ### CentOS
 Still a work in progress, but minimal:
@@ -101,6 +115,12 @@ We're creating local user, 'abuseio', which will be used to run the application.
 ```bash
 adduser abuseio
 ```
+
+Please make sure that your abuseio user has the default group into abuseio. Apparently it might be abuseio:users instead:
+```
+usermod -g abuseio abuseio
+```
+
 Then add your Apache user and MTA user to the 'abuseio' group.  
 Ubuntu defaults would then be:
 
@@ -110,6 +130,7 @@ addgroup postfix abuseio
 addgroup www-data abuseio
 ```
 > You will need to restart Apache and Postfix in this example to make your changes active!
+> When you're running php-fpm as www-data, you need to restart that as well.
 
 ## Post-install requirements
 
@@ -238,13 +259,13 @@ postconf -e transport_maps=hash:/etc/postfix/transport
 /etc/aliases:
 ```bash
 echo "notifier: notifier@isp.local" >> /etc/aliases
-newaliasses
+newaliases
 ```
 
 Add this to /etc/postfix/master.cf:
 ```bash
 notifier  unix  -       n       n       -       -       pipe
- flags=Rq user=abuseio argv=/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive
+ flags=Rq user=abuseio:abuseio argv=/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive
 
 ```
 
@@ -253,6 +274,18 @@ Restart postfix:
 /etc/init.d/postfix restart
 ```
 
+### Fetchmail
+Configure delivery using a POP3- or IMAP-mailbox.
+
+Create a fetchmail configuration for your local abuseio user by creating a file ```.fetchmailrc``` in your local users home-directory with the following content:
+```
+poll your.mail.server proto imap user "your-username" pass "your-password" mda "/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive"
+```
+
+Start fetchmail as a deamon for your local user, which checks it's mailbox every 5 minutes (300 seconds):
+```bash
+su -c "fetchmail -d 300 -s" abuseio
+```
 
 ## Webserver
 

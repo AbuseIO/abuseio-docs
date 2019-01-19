@@ -12,7 +12,7 @@ In general this document is meant for Internet Providers and large networks (Net
 
 ASN: Autonomous System Number
 PI: Provider Independent IP Space
-PA: Privider Assigned IP Space
+PA: Provider Assigned IP Space
 RIR:
 LIR:
 
@@ -157,13 +157,21 @@ account to link your company details:
 - Click on 'send confirmation' to receive the verification e-mail
 - Follow the instructions in the confirmation e-mail
 
-### Microsoft SNDS
+### Microsoft JMRP (Junk Mail Reporting Program)
+
+Totally free, but you need an Microsoft account to sign up. 
+
+- Create a Microsoft Live Account  with your company / abusedesk information (can be the same account for Microsoft SNDS)
+- Visit https://sendersupport.olc.protection.outlook.com/snds/Jmrp.aspx?view=jj and login with your account.
+- Create a new feed
+
+### Microsoft SNDS (Smart Network Data Services)
 
 Totally free, and you can register whole ASN's up to single IP's of your mailservers. It does  require a Live account to link your company details. _IPv6 is not supported at all (!)_ Please note that for some reason the 'whois access' for SNDS is very limited, so it might take a VERY long time before ASN or CIDR requests are approved. Authorization addresses are chosen automatically by an algorithm based on the input requested, either an IP range or an Autonomous System Number (ASN). 
 
 For IP or IP range, it uses two data sources, reverse DNS and WHOIS, each of which can return results independently. For an ASN, SNDS will use WHOIS similarly to how it does for IPs, in that it will authorize any email addresses found in the ASN record maintained by the registrars. Details can be found here: https://postmaster.live.com/snds/faq.aspx#AddressChoosing  
 
-- Create a Microsoft Live Account  with your company / abusedesk information
+- Create a Microsoft Live Account  with your company / abusedesk information (can be the same account for Microsoft JMRP)
 - Visit https://postmaster.live.com/snds and click login. Login with your account.
 - Click 'Request Access'
 - Enter your ASN (preferred) or your IP(s)

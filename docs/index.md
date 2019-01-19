@@ -53,6 +53,7 @@ Found incomplete or incorrect documentation? Then please create an issue to repo
 
 ## Sponsors
 
+
 # User Documentation
 
 ## Getting Started
@@ -76,6 +77,7 @@ Found incomplete or incorrect documentation? Then please create an issue to repo
 [License](license.md)
 
 [Release Notes](release_notes.md)
+
 
 # Feature Documentation
 
