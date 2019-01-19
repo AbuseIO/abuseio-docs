@@ -1,4 +1,4 @@
-# Installation Guide AbuseIO 4.0
+# Installation Guide AbuseIO 4.1
 
 # System Requirements
 
@@ -35,7 +35,7 @@ See docker installation and configuration instructions below:
 
 ### Ubuntu
 ```bash
-apt-get install curl git mysql-server apache2 apache2-utils libapache2-mod-php5 php5 php-pear php5-dev php5-mcrypt php5-mysql php5-pgsql php5-curl php5-intl
+apt-get install curl git mysql-server apache2 apache2-utils libapache2-mod-php7.0 php7.0 php-pear php7.0-dev php7.0-mcrypt php7.0-mysql php7.0-pgsql php7.0-curl php7.0-intl php7.0-bcmath php7.0-mbstring php7.0-zip
 ```
 If you intend to use the supervisor instead of systemd, you will need to install it:
 
@@ -43,10 +43,10 @@ If you intend to use the supervisor instead of systemd, you will need to install
 apt-get install supervisor
 ```
 
-If you're running PHP7 or later then you must install BCmath, ZIP and MBstring manually, as its no longer a part of the default installation:
+In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
 
 ```bash
-apt-get install php7.0-bcmath php7.0-mbstring php-zip
+apt-get install postfix
 ```
 
 In addition you will can install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want. Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox.
@@ -104,9 +104,9 @@ pecl install mailparse-2.1.6
 On some systems, the above command fails. If it does, try adding -Z after 'install'.
 
 ```bash
-echo "extension=mailparse.so" > /etc/php5/mods-available/mailparse.ini
-php5enmod mailparse
-php5enmod mcrypt
+echo "extension=mailparse.so" > /etc/php/7.0/mods-available/mailparse.ini
+phpenmod mailparse
+phpenmod mcrypt
 ```
 > Note: Replace "php5" in the above command with "php/7.0" if you're running PHP7.
 
@@ -132,6 +132,25 @@ addgroup www-data abuseio
 > You will need to restart Apache and Postfix in this example to make your changes active!
 > When you're running php-fpm as www-data, you need to restart that as well.
 
+## Post-install requirements
+
+### MySQL 5.7+ default change
+
+If you are running MySQL 5.7 or higher, the default value for a ZERO_DATE is no longer accepted. Laraval
+still uses ZERO_DATE instead of NULL and running database migration will result into errors! Therefor you
+_MUST_ disable strict mode:
+
+_/etc/mysql/conf.d/disable_strict_mode.cnf_
+```bash
+[mysqld]
+sql_mode=IGNORE_SPACE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+```
+
+restart MySQL after:
+
+```bash
+systemctl restart mysql
+```
 
 # Installation
 
@@ -203,6 +222,7 @@ supervisorctl reread
 supervisorctl stop abuseio_queue_collector
 supervisorctl stop abuseio_queue_email_incoming
 supervisorctl stop abuseio_queue_email_outgoing
+supervisorctl stop abuseio_queue_delegation
 ```
 
 > Important: Leave these supervisor or systemd jobs stopped until you completed the entire installation process,

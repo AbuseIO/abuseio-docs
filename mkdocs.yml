@@ -1,4 +1,4 @@
-site_name: AbuseIO 4.0
+site_name: AbuseIO 4.1
 site_url: https://docs.abuse.io
 site_author: AbuseIO Foundation
 markdown_extensions:
@@ -8,13 +8,14 @@ markdown_extensions:
     - sane_lists
     - admonition
 extra:
-    version: 4.0
-theme: cerulean
+    version: 4.1
+theme: mkdocs
 pages:
 - 'Index': 'index.md'
 - 'Getting Started':
     - 'Installation': 'installation.md'
-    - 'Migrating from 3.x': 'migration.md'
+    - 'Migrating from 3.x': 'old_version.md'
+    - 'Migrating from 4.0': 'migration.md'
     - 'Main configuration': 'configuration_main.md'
     - 'Common problems': 'common_problems.md'
 - 'User Guide':
@@ -26,3 +27,7 @@ pages:
 - 'About':
     - 'License': 'license.md'
     - 'Release Notes': 'release_notes.md'
+- 'Feature Documentation':
+    - 'API Documentation': 'api.md'
+    - 'Delegation': 'delegation.md'
+    - 'GDPR functionality': 'gdpr.md'

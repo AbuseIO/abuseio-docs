@@ -41,9 +41,8 @@ you end up with incidents, events and tickets! Now lets see how deep the rabbit 
 
 ## Intended inner workings
 
-To start off you might want to have a look and the DFD I've built, which can be found here:
-
-![Email Process](images/EmailProcess.png)
+To start off you might want to have a look and the DFD i've built, which can be found here:
+https://raw.githubusercontent.com/AbuseIO/abuseio-docs/4.1/docs/images/EmailProcess.png
 
 For this section you can skip the Artisan and Queue Daemon parts as they are not really involved
 with a parser. When an e-mail is received it is put into a queue and every 'run cycle', jobs are 
