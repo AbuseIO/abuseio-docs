@@ -27,3 +27,7 @@ pages:
 - 'About':
     - 'License': 'license.md'
     - 'Release Notes': 'release_notes.md'
+- 'Feature Documentation':
+    - 'API Documentation': 'api.md'
+    - 'Delegation': 'delegation.md'
+    - 'GDPR functionality': 'gdpr.md'
