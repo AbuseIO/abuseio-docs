@@ -9,7 +9,7 @@ markdown_extensions:
     - admonition
 extra:
     version: 4.1
-theme: cerulean
+theme: mkdocs
 pages:
 - 'Index': 'index.md'
 - 'Getting Started':
