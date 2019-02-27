@@ -34,18 +34,18 @@ See docker installation and configuration instructions below:
 ## Pre-install Requirements
 
 ### Ubuntu
-```bash
+```
 apt-get install curl git mysql-server apache2 apache2-utils libapache2-mod-php7.0 php7.0 php-pear php7.0-dev php7.0-mcrypt php7.0-mysql php7.0-pgsql php7.0-curl php7.0-intl php7.0-bcmath php7.0-mbstring php7.0-zip
 ```
 If you intend to use the supervisor instead of systemd, you will need to install it:
 
-```bash
+```
 apt-get install supervisor
 ```
 
 In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
 
-```bash
+```
 apt-get install postfix
 ```
 
@@ -53,7 +53,7 @@ In addition you will can install an MTA. The examples provided are based on post
 
 ### CentOS
 Still a work in progress, but minimal:
-```bash
+```
 php-bcmath, supervisor
 ```
 
@@ -61,7 +61,7 @@ php-bcmath, supervisor
 Although Composer is not required, we highly recommend that you install Composer as it allows you to easily update certain parts of the system. You can install AbuseIO without Composer by downloading the premade .TAR archive from our website.
 
 Download the latest version of [Composer](https://getcomposer.org/) and make it accessible system-wide.
-```bash
+```
 cd /tmp
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
@@ -73,11 +73,11 @@ chown root:root /usr/local/bin/composer
 ### Mailparse
 This is a PECL module for PHP that has to be downloaded and compiled before you can use it.
 If you're running PHP7 or later, run:
-```bash
+```
 pecl install mailparse
 ```
 If you run into this compiler error:
-```bash
+```
 /tmp/pear/temp/mailparse/mailparse.c:34:2: error: #error The mailparse extension requires the mbstring extension!
  #error The mailparse extension requires the mbstring extension!
   ^
@@ -86,7 +86,7 @@ make: *** [mailparse.lo] Error 1
 ERROR: `make' failed`
 ```
 You should do:
-```bash
+```
 vi /usr/include/php/20151012/ext/mbstring/libmbfl/mbfl/mbfilter.h
 ```
 Then add the following lines right under `#define MBFL_MBFILTER_H`:
@@ -98,12 +98,12 @@ And rerun the pecl install command.
 
 If you're running PHP5.6 or older, run:
 
-```bash
+```
 pecl install mailparse-2.1.6
 ```
 On some systems, the above command fails. If it does, try adding -Z after 'install'.
 
-```bash
+```
 echo "extension=mailparse.so" > /etc/php/7.0/mods-available/mailparse.ini
 phpenmod mailparse
 phpenmod mcrypt
@@ -112,7 +112,7 @@ phpenmod mcrypt
 
 ## Create local user
 We're creating local user, 'abuseio', which will be used to run the application.
-```bash
+```
 adduser abuseio
 ```
 
@@ -124,7 +124,7 @@ usermod -g abuseio abuseio
 Then add your Apache user and MTA user to the 'abuseio' group.  
 Ubuntu defaults would then be:
 
-```bash
+```
 addgroup abuseio abuseio
 addgroup postfix abuseio
 addgroup www-data abuseio
@@ -141,14 +141,14 @@ still uses ZERO_DATE instead of NULL and running database migration will result 
 _MUST_ disable strict mode:
 
 _/etc/mysql/conf.d/disable_strict_mode.cnf_
-```bash
+```
 [mysqld]
 sql_mode=IGNORE_SPACE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
 ```
 
 restart MySQL after:
 
-```bash
+```
 systemctl restart mysql
 ```
 
@@ -161,7 +161,7 @@ You can install AbuseIO by downloading a tarball or installing with Composer. Ei
 > - You should __NOT__ run the `composer update` command, unless you know exactly what you are doing.
 
 ## Install from tarball
-```bash
+```
 cd /opt
 wget https://abuse.io/releases/abuseio-latest.tar.gz
 tar zxf abuseio-latest.tar.gz
@@ -169,7 +169,7 @@ tar zxf abuseio-latest.tar.gz
 
 ## Install with Composer
 Install the latest stable version:
-```bash
+```
 cd /opt
 composer create-project abuseio/abuseio
 ```
@@ -183,7 +183,7 @@ composer create-project abuseio/abuseio --stability=beta (options are: stable, R
 ## Permissions
 Some parts of the installation run as the root user. Since the application will run as user 'abuseio', we need to set some permissions.
 
-```bash
+```
 cd /opt/abuseio
 chown -R abuseio:abuseio .
 chmod -R 770 storage/
@@ -193,7 +193,7 @@ chmod 770 bootstrap/cache/
 
 ## Systemd, logrotate, rsyslog
 
-```bash
+```
 mkdir /var/log/abuseio
 chown syslog:adm /var/log/abuseio
 cp -vr /opt/abuseio/extra/etc/logrotate.d/* /etc/logrotate.d/
@@ -201,22 +201,22 @@ cp -vr /opt/abuseio/extra/etc/rsyslog.d/* /etc/rsyslog.d/
 service rsyslog restart
 ```
 
-```bash
-cp -vr /opt/abuseio/extra/etc/systemd/* /etc/
+```
+cp -vr /opt/abuseio/extra/etc/systemd/* /etc/systemd/system/
 systemctl daemon-reload
 ```
 
 ## Supervisor, logrotate, rsyslog
 Do NOT use supervisor AND systemd at the same time.
 
-```bash
+```
 cp -vr /opt/abuseio/extra/etc/* /etc/
 mkdir /var/log/abuseio
 chown syslog:adm /var/log/abuseio
 service rsyslog restart
 ```
 
-```bash
+```
 supervisorctl reread
 /etc/init.d/supervisor restart
 supervisorctl stop abuseio_queue_collector
@@ -246,31 +246,31 @@ Configure delivery using transport maps
 > open firewall, etc). By using this transport any e-mail send to notifier@isp.local will be pushed (pipe) to the AbuseIO Framework.
 
 Create file /etc/postfix/transport:
-```bash
+```
 echo "notifier@isp.local notifier:" >> /etc/postfix/transport
 postmap /etc/postfix/transport
 ```
 
 Set the transport map in the configuration:
-```bash
+```
 postconf -e transport_maps=hash:/etc/postfix/transport
 ```
 
 /etc/aliases:
-```bash
+```
 echo "notifier: notifier@isp.local" >> /etc/aliases
 newaliases
 ```
 
 Add this to /etc/postfix/master.cf:
-```bash
+```
 notifier  unix  -       n       n       -       -       pipe
  flags=Rq user=abuseio:abuseio argv=/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive
 
 ```
 
 Restart postfix:
-```bash
+```
 /etc/init.d/postfix restart
 ```
 
@@ -294,7 +294,7 @@ Setting up a simple virtual host for AbuseIO.
 > It is recommended to setup a virtual host with SSL enabled.
 
 Enable modules:
-```bash
+```
 a2enmod rewrite
 a2enmod headers
 ```
@@ -323,7 +323,7 @@ Create file /etc/apache2/sites-available/abuseio.conf containing:
 
 If you are migrating from version 3.x you can add use the ash-abuseio.domain.tld with documentroot /opt/abuseio/public/legacy to provide a nice redirection by converting tokens.
 
-```bash
+```
 a2ensite abuseio
 service apache2 reload
 ```
@@ -352,7 +352,7 @@ server {
   }
 }
 ```
-```bash
+```
 ln -s /etc/nginx/sites-available/abuseio /etc/nginx/sites-enabled/001-abuseio
 service nginx reload
 ```
@@ -363,7 +363,7 @@ service nginx reload
 ### MySQL
 Create a database and a user with permissions to the database. This example will use the local database server.
 
-```bash
+```
 mysqladmin -p create abuseio
 mysql -p -Be "CREATE USER 'abuseio'@'localhost' IDENTIFIED BY '<password>'"
 mysql -p -Be "GRANT ALL on abuseio.* to 'abuseio'@'localhost'"
@@ -502,7 +502,7 @@ Once you have completed all the steps in the installation document you can start
 required to setup some kind of forwarding so that these reports will end up in AbuseIO.
 
 You have created an e-mail address 'notifier@isp.local' (which is a placeholder, which really would be something like notifier@amazon.com)
-where you can receive your reports to. Useally you would get your reports in abuse@isp.local (or abuse@amazon.com) and you will need to
+where you can receive your reports to. Usually you would get your reports in abuse@isp.local (or abuse@amazon.com) and you will need to
 forward/redirect (which modifying the message!) the e-mails you want handled by AbuseIO to the notifier@isp.local address.
 
 ## Failed Jobs
