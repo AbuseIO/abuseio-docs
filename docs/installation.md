@@ -202,7 +202,7 @@ service rsyslog restart
 ```
 
 ```
-cp -vr /opt/abuseio/extra/etc/systemd/* /etc/systemd/system/
+cp -vr /opt/abuseio/extra/etc/systemd/* /etc/systemd/
 systemctl daemon-reload
 ```
 
