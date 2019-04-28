@@ -212,7 +212,7 @@ systemctl daemon-reload
 ```
 
 There's a slight variation in the names of required services on different Linux distributions.
-On CentOS, make sure the 'Required=' lines in the service files point to the correct service names or the applications will fail to start.
+On CentOS, make sure the 'Requires=' lines in the service files point to the correct service names or the applications will fail to start.
 
 ### On CentOS / RedHat-likes
 ```
