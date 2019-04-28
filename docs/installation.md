@@ -56,6 +56,7 @@ Still a work in progress, but minimal:
 ```
 php-bcmath, supervisor
 ```
+Please keep in mind AbuseIO was developed on Ubuntu/Debian systems and there might be some assumptions in this installation document. Please keep us posted if you find such situations, so we can improve the documentation!
 
 ### Composer
 Although Composer is not required, we highly recommend that you install Composer as it allows you to easily update certain parts of the system. You can install AbuseIO without Composer by downloading the premade .TAR archive from our website.
@@ -191,8 +192,8 @@ chmod 770 bootstrap/cache/
 ```
 
 
-## Systemd, logrotate, rsyslog
-
+## Copy logrotate and rsyslog configs
+> Note: The user/group 'syslog:adm' is prorably a Debianism, and could differ for your Linux distribution!
 ```
 mkdir /var/log/abuseio
 chown syslog:adm /var/log/abuseio
@@ -201,22 +202,30 @@ cp -vr /opt/abuseio/extra/etc/rsyslog.d/* /etc/rsyslog.d/
 service rsyslog restart
 ```
 
+> Important: Do NOT use supervisor AND systemd at the same time.
+
+## If you're using systemd:
+### On Debian / Ubuntu-likes
 ```
 cp -vr /opt/abuseio/extra/etc/systemd/* /etc/systemd/
 systemctl daemon-reload
 ```
 
-## Supervisor, logrotate, rsyslog
-Do NOT use supervisor AND systemd at the same time.
+There's a slight variation in the names of required services on different Linux distributions.
+On CentOS, make sure the 'Required=' lines in the service files point to the correct service names or the applications will fail to start.
 
+### On CentOS / RedHat-likes
 ```
-cp -vr /opt/abuseio/extra/etc/* /etc/
-mkdir /var/log/abuseio
-chown syslog:adm /var/log/abuseio
-service rsyslog restart
+cp -vr /opt/abuseio/extra/etc/systemd/* /etc/systemd/
+sed -i -e 's/mysql/mysqld/' -e 's/apache2/httpd/' /etc/systemd/system/abuseio*.service
+systemctl daemon-reload
 ```
 
+> Important: Do NOT use supervisor AND systemd at the same time.
+
+## If you're using supervisor:
 ```
+cp -vr /opt/abuseio/extra/etc/supervisor /etc/
 supervisorctl reread
 /etc/init.d/supervisor restart
 supervisorctl stop abuseio_queue_collector
