@@ -277,6 +277,9 @@ notifier  unix  -       n       n       -       -       pipe
  flags=Rq user=abuseio:abuseio argv=/usr/bin/php -q /opt/abuseio/artisan --env=production email:receive
 
 ```
+In order to use Google Services in case you are going to relay your Mail Server to a Gmail account, you must encrypt your SMTP messages and use port 587. Refer to Stack Overflow for solutions to this problem.
+
+Using your Mail Server to send messages will result in an automatic Spam trigger and as a result, none of your sent E-mail's will be sent to 'inbox'. This will result in a Bounce-Back to the Mail Server itself and It will accumulate a lot of E-mail's which will fill up storage pretty quickly. While configuring Postfix I advise to disable It's services overnight so to not fill up space or risk reaching the Sent Email Threshold by Gmail as your IP will be blocked for a certain amount of time.
 
 Restart postfix:
 ```
@@ -329,6 +332,7 @@ Create file /etc/apache2/sites-available/abuseio.conf containing:
   </Directory>
 </VirtualHost>
 ```
+In case the webpage throws out the source code of the PHP Index file, this means that apache isn't properly loading the PHP modules. You can remove them and then re-install them again. Refer to Stack Overflow regarding PHP modules not loading in Apache.
 
 If you are migrating from version 3.x you can add use the ash-abuseio.domain.tld with documentroot /opt/abuseio/public/legacy to provide a nice redirection by converting tokens.
 
@@ -479,6 +483,8 @@ Also if you have changed the username and/or group where you run AbuseIO under, 
 config `/opt/abuseio/config/app.php` as well.
 
 Creating a copy in the $ENV folder with the example above allows you to override the defaults specified in the original file. Only the variables in your override config which you modify will actually be used. If the default config contains an option called 'bla', and you remove it from your override config, then the default option will be used. So, you are not required to copy the entire file, but you can just copy the elements needed into a new file. Using a full copy can help simplify your configuration.
+
+## Below Configurations require more Documentation as they require some PHP knowledge for configuring them.
 
 ## Collector configuration
 
