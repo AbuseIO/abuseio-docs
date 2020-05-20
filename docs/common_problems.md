@@ -81,3 +81,25 @@ You have invalid dependancies in the service file. This is most likely because y
 
 Change the `Requires=` line in your systemd unit to `Requires=mariadb.service`.
 
+## 5. Getting a ErrorException with Permission denied 
+
+**Symptoms:**
+
+- Errors containing the words 'permission denied' in any from.
++ Example: "production.ERROR: ErrorException: file_put_contents(/opt/abuseio/storage/framework/views/250b6427797b79395cd5b12201293d74): failed to open stream: Permission denied in /opt/abuseio/bootstrap/cache/compiled.php:6701 Stack trace ( ... )
+
+**Possible cause:**
+
+- You have manually run agents, scripts or tools as root or another user other then abuseio
+- You have skipped the permissions and ownership step in the installation guide
+
+**Solution:**
+
+Reset the permissions of the abuseio folder.
+
+```
+cd /opt/abuseio
+chown -R abuseio:abuseio .
+chmod -R 770 storage/
+chmod 770 bootstrap/cache/
+```
