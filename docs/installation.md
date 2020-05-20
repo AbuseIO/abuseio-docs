@@ -436,6 +436,7 @@ Start the framework daemons, after databases have been initialised:
 supervisorctl start abuseio_queue_collector
 supervisorctl start abuseio_queue_email_incoming
 supervisorctl start abuseio_queue_email_outgoing
+supervisorctl start abuseio_queue_delegation
 ```
 
 or with systemd:
@@ -444,6 +445,7 @@ or with systemd:
 systemctl start abuseio_queue_collector
 systemctl start abuseio_queue_email_incoming
 systemctl start abuseio_queue_email_outgoing
+systemctl start abuseio_queue_delegation
 ```
 
 ## Cronjobs
