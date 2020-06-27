@@ -2,123 +2,80 @@
 
 # System Requirements
 
-+ 64-bit Linux based distribution
-+ MTA (Postfix 2.9.1+, Exim 4.76+) or Fetchmail
-+ Web server software (Apache 2.22+ or Nginx 1.1.19+)
-+ Database backend (MySQL 5.5+, Postgres 9.1+)
-+ PHP 5.5.9+ (Both CLI as apache module)
++ Ubuntu 20.04 LTS 64-bit Linux based distribution
++ MTA (Postfix or Exim) or Fetchmail to handle incoming e-mails
++ Web server software (Apache or Nginx)
++ Database backend (MariaDB)
++ PHP 7.4+ (Both CLI as apache module)
 + (__optional__) Local resolving nameserver (Bind, pDNSRecursor) ([more info](#resolving))
-
-# Automated installation
-
-This documentation will guide your thru a basic installation. However if you like to do automation with Docker or Ansible, you might
-want to check out the following repositories:
-
-Ansible:
-```
-http://www.github.com/abuseio/abuseio-ansible/
-```
-
-Docker:
-```
-http://www.github.com/abuseio/abuseio-docker/
-```
-
-See docker installation and configuration instructions below:
-
-[a relative link](installation_via_docker.md)
-
 
 # Preparation
 
 ## Pre-install Requirements
 
+- Install a Ubuntu 20.04 LTS system as you normally do, do NOT name the administrative user 'abuseio', but use 'admin' or something similair
+- Make sure you configure networking correctly
+- If you are using NAT, make sure ports 25, 80 and 443 are mapped onto your system
+- Make sure you have a DNS name, e.g. abuseio.yourdomain.tld pointing onto your system
+
 ### Ubuntu
-```
-apt-get install curl git mysql-server apache2 apache2-utils libapache2-mod-php7.0 php7.0 php-pear php7.0-dev php7.0-mcrypt php7.0-mysql php7.0-pgsql php7.0-curl php7.0-intl php7.0-bcmath php7.0-mbstring php7.0-zip
-```
-If you intend to use the supervisor instead of systemd, you will need to install it:
+
+Setup firewalling (don't be stupid, you always needs to firewall!)
+The 192.168.1.0/24 in this example should be your administrative IP addresses where you want to SSH from, and preferable should be a /32
 
 ```
-apt-get install supervisor
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow smtp
+ufw allow http
+ufw allow https
+ufw allow from 192.168.1.0/24 to any port 22
+ufw enable
 ```
 
-In addition you will need to install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want.
+Install packages required for AbuseIO
+```
+apt-get install composer curl git mariadb-server apache2 libapache2-mod-php7.4 php7.4 php-pear php7.4-dev php7.4-mysql php7.4-curl php7.4-intl php7.4-bcmath php7.4-mbstring php7.4-zip
+```
+
+In addition you will need to install an MTA. The examples provided are based on postfix which is defaultly used, but you are free to use any MTA (to collection method) you want.  Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox, which is described in the advanced user guide.
 
 ```
 apt-get install postfix
 ```
 
-In addition you will can install an MTA. The examples provided are based on postfix, but you are free to use any MTA (to collection method) you want. Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox.
+Also we want to use SSL. If you have your own certificates, great! and make sure you use them. The installation guide assumes a default Letsencrypt certification:
 
-### CentOS
-Still a work in progress, but minimal:
 ```
-php-bcmath, supervisor
+apt-get install python3-certbot python3-certbot-apache
 ```
-Please keep in mind AbuseIO was developed on Ubuntu/Debian systems and there might be some assumptions in this installation document. Please keep us posted if you find such situations, so we can improve the documentation!
-
-### Composer
-Although Composer is not required, we highly recommend that you install Composer as it allows you to easily update certain parts of the system. You can install AbuseIO without Composer by downloading the premade .TAR archive from our website.
-
-Download the latest version of [Composer](https://getcomposer.org/) and make it accessible system-wide.
-```
-cd /tmp
-curl -sS https://getcomposer.org/installer | php
-mv composer.phar /usr/local/bin/composer
-chmod 755 /usr/local/bin/composer
-chown root:root /usr/local/bin/composer
-```
-
 
 ### Mailparse
-This is a PECL module for PHP that has to be downloaded and compiled before you can use it.
-If you're running PHP7 or later, run:
-```
-pecl install mailparse
-```
-If you run into this compiler error:
-```
-/tmp/pear/temp/mailparse/mailparse.c:34:2: error: #error The mailparse extension requires the mbstring extension!
- #error The mailparse extension requires the mbstring extension!
-  ^
-Makefile:200: recipe for target 'mailparse.lo' failed
-make: *** [mailparse.lo] Error 1
-ERROR: `make' failed`
-```
-You should do:
-```
-vi /usr/include/php/20151012/ext/mbstring/libmbfl/mbfl/mbfilter.h
-```
-Then add the following lines right under `#define MBFL_MBFILTER_H`:
-```c
-#undef HAVE_MBSTRING
-#define HAVE_MBSTRING 1
-```
-And rerun the pecl install command.
-
-If you're running PHP5.6 or older, run:
+This is a PECL module for PHP that has to be downloaded and compiled before you can use it. The PEAR installation will fail claiming mbstring is not installed, however this is a bug. To prevent this we will install the latest version from source:
 
 ```
-pecl install mailparse-2.1.6
-```
-On some systems, the above command fails. If it does, try adding -Z after 'install'.
-
-```
-echo "extension=mailparse.so" > /etc/php/7.0/mods-available/mailparse.ini
+cd /tmp
+wget https://pecl.php.net/get/mailparse-3.1.0.tgz
+tar -zxvf mailparse-3.1.0.tgz
+phpize
+./configure
+sed -i 's/^\(#error .* the mbstring extension!\)/\/\/\1/' mailparse.c
+make
+make install
+echo "extension=mailparse.so" > /etc/php/7.4/mods-available/mailparse.ini
 phpenmod mailparse
-phpenmod mcrypt
 ```
-> Note: Replace "php5" in the above command with "php/7.0" if you're running PHP7.
+
+Then confirm if the PHP module has been installed (if you see output, you are good):
+```
+php -m  | grep mailparse
+```
+
 
 ## Create local user
 We're creating local user, 'abuseio', which will be used to run the application.
 ```
-adduser abuseio
-```
-
-Please make sure that your abuseio user has the default group into abuseio. Apparently it might be abuseio:users instead:
-```
+adduser --disabled-password --shell /bin/false --gecos "AbuseIO" abuseio --home /opt/abuseio
 usermod -g abuseio abuseio
 ```
 
@@ -132,26 +89,19 @@ addgroup www-data abuseio
 ```
 > You will need to restart Apache and Postfix in this example to make your changes active!
 > When you're running php-fpm as www-data, you need to restart that as well.
+> If you follow this documentation and their defaults, then the last steps are to restart these, so you do not have to do this now.
 
 ## Post-install requirements
 
-### MySQL 5.7+ default change
+### Protect MySQL
 
-If you are running MySQL 5.7 or higher, the default value for a ZERO_DATE is no longer accepted. Laraval
-still uses ZERO_DATE instead of NULL and running database migration will result into errors! Therefor you
-_MUST_ disable strict mode:
-
-_/etc/mysql/conf.d/disable_strict_mode.cnf_
-```
-[mysqld]
-sql_mode=IGNORE_SPACE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
-```
-
-restart MySQL after:
+Secure the mariadb (mysql) installation.
 
 ```
-systemctl restart mysql
+mysql_secure_installation
 ```
+
+Follow all the default settings (Yes to all) and set a MySQL root password (and don't forget it)
 
 # Installation
 
@@ -213,37 +163,6 @@ systemctl daemon-reload
 
 There's a slight variation in the names of required services on different Linux distributions.
 On CentOS, make sure the 'Requires=' lines in the service files point to the correct service names or the applications will fail to start.
-
-### On CentOS / RedHat-likes
-```
-cp -vr /opt/abuseio/extra/etc/systemd/* /etc/systemd/
-sed -i -e 's/mysql/mysqld/' -e 's/apache2/httpd/' /etc/systemd/system/abuseio*.service
-systemctl daemon-reload
-```
-
-> Important: Do NOT use supervisor AND systemd at the same time.
-
-## If you're using supervisor:
-```
-cp -vr /opt/abuseio/extra/etc/supervisor /etc/
-supervisorctl reread
-/etc/init.d/supervisor restart
-supervisorctl stop abuseio_queue_collector
-supervisorctl stop abuseio_queue_email_incoming
-supervisorctl stop abuseio_queue_email_outgoing
-supervisorctl stop abuseio_queue_delegation
-```
-
-> Important: Leave these supervisor or systemd jobs stopped until you completed the entire installation process,
-or you might get a lot of errors in your logs!
-
-> Important: The supervisord worker threads run in daemon mode. This will allow the framework to
-be cached and will save a lot of CPU cycles. However if you edit the code in _ANY_ way you will need
-to restart these daemons to prevent jobs from failing. A better option would be to stop the daemons before making a code change, and starting them after the change is complete.
-
-> Note: If you get messages on 'hanging' jobs its most likely these supervisor jobs are not running.
-Please make sure you see running processes from the configured supervisor jobs before submitting
-a bug report.
 
 ## MTA Delivery
 
@@ -337,36 +256,6 @@ a2ensite abuseio
 service apache2 reload
 ```
 
-### Nginx
-This is an example configuration for AbuseIO via Nginx with PHP-fpm. Change it to suit your own setup.  
-Make sure the PHP-fpm processes run as user abuseio.
-
-Create file /etc/nginx/sites-available/abuseio containing:
-```
-server {
-  listen 80;
-  server_name abuseio.myserver.tld;
-  root /opt/abuseio/public;
-  index index.php;
-
-  location ~ \.php$ {
-    try_files $uri =404;
-    fastcgi_pass unix:/var/run/fpm_abuseio.socket;
-    fastcgi_index index.php;
-    include fastcgi_params;
-  }
-
-  location / {
-    try_files $uri $uri/ /index.php?q=$uri&$args;
-  }
-}
-```
-```
-ln -s /etc/nginx/sites-available/abuseio /etc/nginx/sites-enabled/001-abuseio
-service nginx reload
-```
-
-
 ## Database setup
 
 ### MySQL
@@ -428,18 +317,9 @@ php artisan role:assign --role admin --user admin@isp.local
 
 The user:create command will use default settings for any optional arguments. If the --password option is missing then a randomly generated password will be assigned.
 
-## Start the supervisor processes again
+## Start the backend processes
 
 Start the framework daemons, after databases have been initialised:
-
-```bash
-supervisorctl start abuseio_queue_collector
-supervisorctl start abuseio_queue_email_incoming
-supervisorctl start abuseio_queue_email_outgoing
-supervisorctl start abuseio_queue_delegation
-```
-
-or with systemd:
 
 ```bash
 systemctl start abuseio_queue_collector
