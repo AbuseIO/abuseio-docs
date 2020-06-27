@@ -1,4 +1,4 @@
-# Installation Guide AbuseIO 4.1
+# Installation Guide AbuseIO 5.0
 
 # System Requirements
 
@@ -142,27 +142,12 @@ chmod 770 bootstrap/cache/
 ```
 
 
-## Copy logrotate and rsyslog configs
-> Note: The user/group 'syslog:adm' is prorably a Debianism, and could differ for your Linux distribution!
-```
-mkdir /var/log/abuseio
-chown syslog:adm /var/log/abuseio
-cp -vr /opt/abuseio/extra/etc/logrotate.d/* /etc/logrotate.d/
-cp -vr /opt/abuseio/extra/etc/rsyslog.d/* /etc/rsyslog.d/
-service rsyslog restart
-```
+## Setup framework daemons (Systemd)
 
-> Important: Do NOT use supervisor AND systemd at the same time.
-
-## If you're using systemd:
-### On Debian / Ubuntu-likes
 ```
 cp -vr /opt/abuseio/extra/etc/systemd/* /etc/systemd/
 systemctl daemon-reload
 ```
-
-There's a slight variation in the names of required services on different Linux distributions.
-On CentOS, make sure the 'Requires=' lines in the service files point to the correct service names or the applications will fail to start.
 
 ## MTA Delivery
 
@@ -230,6 +215,7 @@ a2enmod headers
 Create file /etc/apache2/sites-available/abuseio.conf containing:
 ```
 <VirtualHost _default_:80>
+  ServerName abuseio.yourdomain.tld
   ServerAdmin webmaster@localhost
   DocumentRoot /opt/abuseio/public
 
@@ -249,11 +235,17 @@ Create file /etc/apache2/sites-available/abuseio.conf containing:
 </VirtualHost>
 ```
 
-If you are migrating from version 3.x you can add use the ash-abuseio.domain.tld with documentroot /opt/abuseio/public/legacy to provide a nice redirection by converting tokens.
+Enable the website:
 
 ```
 a2ensite abuseio
 service apache2 reload
+```
+
+Setup SSL via Letsencrypt, run Certbot and follow the instructions. When asked use option 2:Redirect
+
+```
+certbot
 ```
 
 ## Database setup
@@ -262,9 +254,10 @@ service apache2 reload
 Create a database and a user with permissions to the database. This example will use the local database server.
 
 ```
-mysqladmin -p create abuseio
-mysql -p -Be "CREATE USER 'abuseio'@'localhost' IDENTIFIED BY '<password>'"
-mysql -p -Be "GRANT ALL on abuseio.* to 'abuseio'@'localhost'"
+mysql -Be "CREATE DATABASE abuseio"
+mysql -Be "CREATE USER 'abuseio'@'localhost' IDENTIFIED BY 'CHANGE-THIS-TO-STRONG-PASSWORD'"
+mysql -Be "GRANT ALL on abuseio.* to 'abuseio'@'localhost'"
+mysql -Be "FLUSH PRIVILEGES"
 ```
 
 # Configuration
@@ -285,7 +278,7 @@ DB_DRIVER=mysql
 DB_HOST=localhost
 DB_DATABASE=abuseio
 DB_USERNAME=abuseio
-DB_PASSWORD=<password>
+DB_PASSWORD=CHANGE-THIS-TO-STRONG-PASSWORD
 
 CACHE_DRIVER=file
 SESSION_DRIVER=file
