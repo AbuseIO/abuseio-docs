@@ -273,6 +273,7 @@ APP_ENV=production
 APP_DEBUG=false
 APP_KEY=xxx
 APP_ID=xxx
+APP_URL='http://localhost/'
 
 DB_DRIVER=mysql
 DB_HOST=localhost
@@ -283,6 +284,16 @@ DB_PASSWORD=CHANGE-THIS-TO-STRONG-PASSWORD
 CACHE_DRIVER=file
 SESSION_DRIVER=file
 QUEUE_DRIVER=database
+
+MAIL_DRIVER=smtp
+MAIL_HOST=localhost
+MAIL_PORT=25
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=false
+MAIL_OVERRIDE=false
+
+GDPR_ANONYMIZE_DOMAIN=abuseio.test
 ```
 
 ## Initializing the database
