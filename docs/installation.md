@@ -326,10 +326,15 @@ The user:create command will use default settings for any optional arguments. If
 Start the framework daemons, after databases have been initialised:
 
 ```bash
+systemctl enable abuseio_queue_collector
+systemctl enable abuseio_queue_email_incoming
+systemctl enable abuseio_queue_email_outgoing
+systemctl enable abuseio_queue_delegation
 systemctl start abuseio_queue_collector
 systemctl start abuseio_queue_email_incoming
 systemctl start abuseio_queue_email_outgoing
 systemctl start abuseio_queue_delegation
+systemctl status abuseio_queue*
 ```
 
 ## Cronjobs
@@ -378,7 +383,8 @@ default configuration then make a copy the config file (e.g. Rbl.php) to your lo
 
 ## Parser configuration
 
-By default we have included all the known (stable) parsers for AbuseIO which are enabled by default. These parsers can be found in your
+By default we have included all the known (stable) parsers for AbuseIO which are 
+d by default. These parsers can be found in your
 installation directory in the subfolder './vendor/abuseio/parser-*/'. In the parser folder you find the code and its default configuration.
 do NOT change the default configuration here, if you want to override the default configuration then make a copy the config file (e.g. 
 Spamcop.php) to your local config repository (./config/production/parsers) and edit that file.
