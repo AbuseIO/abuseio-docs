@@ -34,6 +34,8 @@ rsync -var /opt/abuseio/config/development/ /opt/abuseio-new/config/development/
 rsync -var /opt/abuseio/config/testing/ /opt/abuseio-new/config/testing/
 rsync -var /opt/abuseio/storage/ /opt/abuseio-new/storage/
 chown -R abuseio:abuseio /opt/abuseio-new
+cd /opt/abuseio-new
+php artisan migrate
 
 go live:
 
