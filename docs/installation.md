@@ -2,18 +2,18 @@
 
 # System Requirements
 
-+ Ubuntu 20.04 LTS 64-bit Linux based distribution
++ Ubuntu 24.04 LTS 64-bit Linux based distribution
 + MTA (Postfix or Exim) or Fetchmail to handle incoming e-mails
 + Web server software (Apache or Nginx)
 + Database backend (MariaDB)
-+ PHP 7.4+ (Both CLI as apache module)
++ PHP 8.4+ (Both CLI as apache module)
 + (__optional__) Local resolving nameserver (Bind, pDNSRecursor) ([more info](#resolving))
 
 # Preparation
 
 ## Pre-install Requirements
 
-- Install a Ubuntu 20.04 LTS system as you normally do, do NOT name the administrative user 'abuseio', but use 'admin' or something similair
+- Install a Ubuntu 24.04 LTS system as you normally do, do NOT name the administrative user 'abuseio', but use 'admin' or something similair
 - Make sure you configure networking correctly
 - If you are using NAT, make sure ports 25, 80 and 443 are mapped onto your system
 - Make sure you have a DNS name, e.g. abuseio.yourdomain.tld pointing onto your system
