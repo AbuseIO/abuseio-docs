@@ -6,7 +6,7 @@
 + MTA (Postfix or Exim) or Fetchmail to handle incoming e-mails
 + Web server software (Apache or Nginx)
 + Database backend (MariaDB)
-+ PHP 8.4+ (Both CLI as apache module)
++ PHP 8.4 or better (See Larevel LTS requirements, Both CLI as apache module)
 + (__optional__) Local resolving nameserver (Bind, pDNSRecursor) ([more info](#resolving))
 
 # Preparation
@@ -30,15 +30,17 @@ ufw allow smtp
 ufw allow http
 ufw allow https
 ufw allow from 192.168.1.0/24 to any port 22
-ufw enable
+ufw enable # answer yes
 ```
 
 Install packages required for AbuseIO
 ```
-apt-get install composer curl git mariadb-server apache2 libapache2-mod-php7.4 php7.4 php-pear php7.4-dev php7.4-mysql php7.4-curl php7.4-intl php7.4-bcmath php7.4-mbstring php7.4-zip
+LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php # Press enter to confirm.
+sudo apt update
+apt-get install composer curl git mariadb-server apache2 libapache2-mod-php8.4 php8.4 php-pear php8.4-dev php8.4-mysql php8.4-curl php8.4-intl php8.4-bcmath php8.4-mbstring php8.4-zip
 ```
 
-In addition you will need to install an MTA. The examples provided are based on postfix which is defaultly used, but you are free to use any MTA (to collection method) you want.  Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox, which is described in the advanced user guide.
+In addition you will need to install an MTA. The examples provided are based on postfix which is defaultly used, but you are free to use any MTA (to collection method) you want.  Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox, which is described in the advanced user guide. Answering setup with 'Internet Site' and entering a VALID FQDN for the system mail name is a good start. Postfix configuration beyond the minimum operational settings for AbuseIO are out of scope for this documentation.
 
 ```
 apt-get install postfix
@@ -47,29 +49,52 @@ apt-get install postfix
 Also we want to use SSL. If you have your own certificates, great! and make sure you use them. The installation guide assumes a default Letsencrypt certification:
 
 ```
-apt-get install python3-certbot python3-certbot-apache
+apt-get install certbot python3-certbot python3-certbot-apache
 ```
 
 ### Mailparse
 This is a PECL module for PHP that has to be downloaded and compiled before you can use it. The PEAR installation will fail claiming mbstring is not installed, however this is a bug. To prevent this we will install the latest version from source:
 
 ```
+apt-get -y install gcc g++ make autoconf libc-dev pkg-config
+apt-get -y install re2c
+
 cd /tmp
-wget https://pecl.php.net/get/mailparse-3.1.0.tgz
-tar -zxvf mailparse-3.1.0.tgz
+wget https://pecl.php.net/get/mailparse-3.1.9.tgz
+tar -zxvf mailparse-3.1.9.tgz
+cd  mailparse-3.1.9
 phpize
 ./configure
 sed -i 's/^\(#error .* the mbstring extension!\)/\/\/\1/' mailparse.c
 make
 make install
-echo "extension=mailparse.so" > /etc/php/7.4/mods-available/mailparse.ini
+echo "extension=mailparse.so" > /etc/php/8.4/mods-available/mailparse.ini
 phpenmod mailparse
+
 ```
 
 Then confirm if the PHP module has been installed (if you see output, you are good):
 ```
-php -m  | grep mailparse
+php -i | grep -i 'mailparse support' # Should report enabled
+php -m  | grep mailparse # should output mailparse
 ```
+
+Install latest version of composer
+
+```
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('sha384', 'composer-setup.php') === 'ed0feb545ba87161262f2d45a633e34f591ebb3381f2e0063c345ebea4d228dd0043083717770234ec00c5a9f9593792') { echo 'Installer verified'.PHP_EOL; } else { echo 'Installer corrupt'.PHP_EOL; unlink('composer-setup.php'); exit(1); }"
+php composer-setup.php
+php -r "unlink('composer-setup.php');"
+mv composer.phar /usr/bin/composer
+apt-mark hold composer
+```
+
+Confirm composer version upgrade
+```
+sudo -u abuseio composer --version
+```
+Expected output 2.8.12 with PHP version 8.4.13 or better.
 
 
 ## Create local user
@@ -83,9 +108,9 @@ Then add your Apache user and MTA user to the 'abuseio' group.
 Ubuntu defaults would then be:
 
 ```
-addgroup abuseio abuseio
-addgroup postfix abuseio
-addgroup www-data abuseio
+usermod -a -G  abuseio abuseio
+usermod -a -G  postfix abuseio
+usermod -a -G  www-data abuseio
 ```
 > You will need to restart Apache and Postfix in this example to make your changes active!
 > When you're running php-fpm as www-data, you need to restart that as well.
@@ -111,25 +136,19 @@ You can install AbuseIO by downloading a tarball or installing with Composer. Ei
 > - Updating/installing packages with composer might require a GitHub account and a generated token.
 > - You should __NOT__ run the `composer update` command, unless you know exactly what you are doing.
 
-## Install from tarball
+## Install from GITHUB
 ```
 cd /opt
-wget https://abuse.io/releases/abuseio-latest.tar.gz
-tar zxf abuseio-latest.tar.gz
+mv abuseio abuseio.old
+git clone --single-branch --branch 5.0 https://github.com/AbuseIO/AbuseIO.git abuseio
+cd abuseio
+sudo -u abuseio bash
+composer install
+exit
 ```
 
-## Install with Composer
-Install the latest stable version:
-```
-cd /opt
-composer create-project abuseio/abuseio
-```
+If you get ANY errors (red) or warnings (yellow) you should investigate the output.
 
-Install the latest version:
-```
-cd /opt
-composer create-project abuseio/abuseio --stability=beta (options are: stable, RC, beta, alpha, dev)
-```
 
 ## Permissions
 Some parts of the installation run as the root user. Since the application will run as user 'abuseio', we need to set some permissions.
@@ -188,7 +207,7 @@ Restart postfix:
 ```
 
 ### Fetchmail
-Configure delivery using a POP3- or IMAP-mailbox.
+Configure delivery using a POP3- or IMAP-mailbox. This is not needed if you configured Postfix!
 
 Create a fetchmail configuration for your local abuseio user by creating a file ```.fetchmailrc``` in your local users home-directory with the following content:
 ```
@@ -265,7 +284,8 @@ mysql -Be "FLUSH PRIVILEGES"
 All these things should be done as user 'abuseio' from within the folder /opt/abuseio.
 
 ## Environment settings
-
+<DONE UP TO HERE>
+ 
 The .env file contains your base configuration and must be set correctly because you will be setting the application's configuration. An example of the file:
 
 ```bash
@@ -298,7 +318,8 @@ GDPR_ANONYMIZE_DOMAIN=abuseio.test
 
 ## Initializing the database
 
-```bash
+```
+sudo -u abuseio bash
 cd /opt/abuseio
 php artisan migrate
 ```
