@@ -258,6 +258,7 @@ Enable the website:
 
 ```
 a2ensite abuseio
+a2dissite 000-default.conf
 service apache2 reload
 ```
 
