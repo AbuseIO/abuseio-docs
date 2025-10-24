@@ -141,13 +141,18 @@ You can install AbuseIO by downloading a tarball or installing with Composer. Ei
 cd /opt
 mv abuseio abuseio.old
 git clone --single-branch --branch 5.0 https://github.com/AbuseIO/AbuseIO.git abuseio
+chown -R abuseio:abuseio abuseio
 cd abuseio
 sudo -u abuseio bash
 composer install
 exit
 ```
 
-If you get ANY errors (red) or warnings (yellow) you should investigate the output.
+If you get ANY errors (red) or warnings (yellow) you should investigate the output. 
+If you are a developer and need to push changes back, change HTTP into SSH origin:
+```
+git remote set-url origin git@github.com:AbuseIO/AbuseIO.git
+```
 
 
 ## Permissions
@@ -285,7 +290,6 @@ mysql -Be "FLUSH PRIVILEGES"
 All these things should be done as user 'abuseio' from within the folder /opt/abuseio.
 
 ## Environment settings
-<DONE UP TO HERE>
  
 The .env file contains your base configuration and must be set correctly because you will be setting the application's configuration. An example of the file:
 
@@ -323,12 +327,15 @@ GDPR_ANONYMIZE_DOMAIN=abuseio.test
 sudo -u abuseio bash
 cd /opt/abuseio
 php artisan migrate
+exit
 ```
 
 If you want some demo data to play with, you should run the following commands:
 ```bash
+sudo -u abuseio bash
 php artisan db:seed
 extra/notifier-samples/runall-noqueue
+exit
 ```
 
 ## Creating an admin user for the GUI
@@ -336,9 +343,11 @@ extra/notifier-samples/runall-noqueue
 The default installation does not create an admin user unless you seed the demo data. You can create an admin user manually using these commands.
 
 ```
+sudo -u abuseio bash
 cd /opt/abuseio
 php artisan user:create admin@isp.local
 php artisan role:assign --role admin --user admin@isp.local
+exit
 ```
 
 The user:create command will use default settings for any optional arguments. If the --password option is missing then a randomly generated password will be assigned.
@@ -348,6 +357,7 @@ The user:create command will use default settings for any optional arguments. If
 Start the framework daemons, after databases have been initialised:
 
 ```bash
+systemctl daemon-reload
 systemctl enable abuseio_queue_collector
 systemctl enable abuseio_queue_email_incoming
 systemctl enable abuseio_queue_email_outgoing
