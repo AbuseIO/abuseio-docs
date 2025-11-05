@@ -35,8 +35,10 @@ ufw enable # answer yes
 
 Install packages required for AbuseIO
 ```
+apt-get update
+apt-get install software-properties-common
 LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php # Press enter to confirm.
-sudo apt update
+apt update
 apt-get install composer curl git mariadb-server apache2 libapache2-mod-php8.4 php8.4 php-pear php8.4-dev php8.4-mysql php8.4-curl php8.4-intl php8.4-bcmath php8.4-mbstring php8.4-zip
 ```
 
