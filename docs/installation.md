@@ -305,7 +305,7 @@ APP_KEY=xxx
 APP_ID=xxx
 APP_URL='http://localhost/'
 
-DB_DRIVER=mysql
+DB_DRIVER=mariadb
 DB_HOST=localhost
 DB_DATABASE=abuseio
 DB_USERNAME=abuseio
