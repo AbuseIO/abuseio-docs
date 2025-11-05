@@ -94,7 +94,7 @@ apt-mark hold composer
 
 Confirm composer version upgrade
 ```
-sudo -u abuseio composer --version
+sudo -u www-data composer --version
 ```
 Expected output 2.8.12 with PHP version 8.4.13 or better.
 
