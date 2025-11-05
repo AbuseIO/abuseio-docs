@@ -144,10 +144,7 @@ cd /opt
 mv abuseio abuseio.old
 git clone --single-branch --branch 5.0 https://github.com/AbuseIO/AbuseIO.git abuseio
 chown -R abuseio:abuseio abuseio
-cd abuseio
-sudo -u abuseio bash
-composer install
-exit
+sudo -u abuseio composer --working-dir=/opt/abuseio install
 ```
 
 If you get ANY errors (red) or warnings (yellow) you should investigate the output. 
