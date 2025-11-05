@@ -296,7 +296,7 @@ All these things should be done as user 'abuseio' from within the folder /opt/ab
 
 ## Environment settings
  
-The .env file contains your base configuration and must be set correctly because you will be setting the application's configuration. An example of the file:
+The .env file contains your base configuration and must be set correctly because you will be setting the application's configuration. Create a new file /opt/abuse/.env with for example the below content:
 
 ```bash
 APP_ENV=production
