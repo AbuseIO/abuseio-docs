@@ -111,8 +111,8 @@ Ubuntu defaults would then be:
 
 ```
 usermod -a -G  abuseio abuseio
-usermod -a -G  postfix abuseio
-usermod -a -G  www-data abuseio
+usermod -a -G  abuseio postfix
+usermod -a -G  abuseio www-data
 ```
 > You will need to restart Apache and Postfix in this example to make your changes active!
 > When you're running php-fpm as www-data, you need to restart that as well.
