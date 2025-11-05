@@ -151,6 +151,9 @@ exit
 ```
 
 If you get ANY errors (red) or warnings (yellow) you should investigate the output. 
+
+### Developer extra
+
 If you are a developer and need to push changes back, change HTTP into SSH origin:
 ```
 git remote set-url origin git@github.com:AbuseIO/AbuseIO.git
