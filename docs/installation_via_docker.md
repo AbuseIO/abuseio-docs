@@ -1,5 +1,7 @@
 # Installation via Docker
 
+NOTICE: Using docker container is currently NOT supported with version 5.x !
+
 ## Prerequisites 
 
 This guide assumes that you have already installed docker and it is running.
