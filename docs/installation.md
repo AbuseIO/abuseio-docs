@@ -305,8 +305,8 @@ The .env file contains your base configuration and must be set correctly because
 ```bash
 APP_ENV=production
 APP_DEBUG=false
-APP_KEY=xxx
-APP_ID=xxx
+APP_KEY=DEFAULT
+APP_ID=DEFAULT
 APP_URL='http://localhost/'
 
 DB_DRIVER=mariadb
