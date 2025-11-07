@@ -14,9 +14,16 @@
 ## Pre-install Requirements
 
 - Install a Ubuntu 24.04 LTS system as you normally do, do NOT name the administrative user 'abuseio', but use 'admin' or something similair
-- Make sure you configure networking correctly
+- [Optional, but required for Ansible] setup an SSH key/authorized keys from your deployment to your installation target
+- Make sure you configure networking correctly, we highly recommend using IPv4 and IPv6 as a dualstack system.
 - If you are using NAT, make sure ports 25, 80 and 443 are mapped onto your system
 - Make sure you have a DNS name, e.g. abuseio.yourdomain.tld pointing onto your system
+
+## Automated installations
+
+We have build an Ansible playbook that follows this installation guide and produces a working installation. If you want to use it, you can find it at https://github.com/AbuseIO/abuseio-ansible/
+
+If you want to continue with a manual installation, keep on following this documentation
 
 ### Ubuntu
 
@@ -383,8 +390,8 @@ Run: `crontab -e -u abuseio`
 
 ## Setup local resolving
 
-Some parsers produce high amounts of DNS queries, so you're better off using a local resolver, such as bind.
-Once bind is installed, you only need to update your resolver configuration to use 127.0.0.1 as the first resolver. Make sure you leave your original resolvers as the second and third options. In most distributions, you will simply add 127.0.0.1 as the first line in /etc/resolv.conf. In newer versions of Ubuntu, resolvers are configured in /etc/network/interfaces.
+Recent Ubuntu installations have systemd-resolved, but that is not an high-performance implementation. Some parsers produce high amounts of DNS queries, so you're better off using a local resolver, such as bind or pdns.
+Once a resolver is installed, you only need to update your resolver configuration to use 127.0.0.1 as the first resolver. Make sure you leave your original resolvers as the second and third options. In most distributions, you will simply add 127.0.0.1 as the first line in /etc/resolv.conf. In newer versions of Ubuntu, resolvers are configured in /etc/network/interfaces. If you have DNS issues on high-query systems, consider removing systemd-resolved and move to bind/pdns natively.
 
 ## Core configuration
 
