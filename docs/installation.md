@@ -375,7 +375,7 @@ systemctl start abuseio_queue_collector
 systemctl start abuseio_queue_email_incoming
 systemctl start abuseio_queue_email_outgoing
 systemctl start abuseio_queue_delegation
-systemctl status abuseio_queue*
+systemctl status abuseio_queue*.service
 ```
 
 ## Cronjobs
