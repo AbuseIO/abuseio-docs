@@ -282,6 +282,46 @@ Setup SSL via Letsencrypt, run Certbot and follow the instructions. When asked u
 certbot
 ```
 
+WARNING: If you do not use SSL properly, Laravel will likely not send out e-mails due to default TLS peer validation on SMTP connections.
+If you want to do this, set MAIL_ENCRYPTION=null in the .env file
+
+## Postfix TLS configuration
+
+Now we have a proper TLS certificate, we need to update Postfix to use that. Update /etc/postfix/main.cf lines
+
+from
+```
+# TLS parameters
+smtpd_tls_cert_file=/etc/ssl/certs/ssl-cert-snakeoil.pem
+smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
+```
+
+into:
+```
+# TLS parameters
+smtpd_tls_cert_file = /etc/letsencrypt/live/YOUR-DOMAIN-HERE/fullchain.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/YOUR-DOMAIN-HERE/privkey.pem
+```
+
+Then create a renew hook, so Postfix is reloaded every time a new certicate is issued:
+
+```
+cat <<'EOF' > /etc/letsencrypt/renewal-hooks/deploy/reload-postfix.sh
+#!/bin/sh
+#
+# Reload Postfix configuration after a successful Certbot certificate renewal.
+#
+systemctl reload postfix
+EOF
+chmod +x /etc/letsencrypt/renewal-hooks/deploy/reload-postfix.sh
+```
+
+Finally reload Postfix after initial setup:
+
+```
+systemctl reload postfix
+```
+
 ## Database setup
 
 ### MySQL
@@ -326,8 +366,8 @@ MAIL_HOST=localhost
 MAIL_PORT=25
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
-MAIL_ENCRYPTION=false
-MAIL_OVERRIDE=false
+MAIL_ENCRYPTION=null
+MAIL_OVERRIDE=null
 
 GDPR_ANONYMIZE_DOMAIN=abuseio.test
 ```
@@ -391,14 +431,10 @@ Start the framework daemons, after databases have been initialised:
 
 ```bash
 systemctl daemon-reload
-systemctl enable abuseio_queue_collector
-systemctl enable abuseio_queue_email_incoming
-systemctl enable abuseio_queue_email_outgoing
-systemctl enable abuseio_queue_delegation
-systemctl start abuseio_queue_collector
-systemctl start abuseio_queue_email_incoming
-systemctl start abuseio_queue_email_outgoing
-systemctl start abuseio_queue_delegation
+systemctl restart abuseio_queue_collector
+systemctl restart abuseio_queue_email_incoming
+systemctl restart abuseio_queue_email_outgoing
+systemctl restart abuseio_queue_delegation
 systemctl status abuseio_queue*.service
 ```
 
