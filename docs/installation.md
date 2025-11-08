@@ -18,6 +18,8 @@
 - Make sure you configure networking correctly, we highly recommend using IPv4 and IPv6 as a dualstack system.
 - If you are using NAT, make sure ports 25, 80 and 443 are mapped onto your system
 - Make sure you have a DNS name, e.g. abuseio.yourdomain.tld pointing onto your system
+- make sure hostname --fqdn matches your abuseio.yourdomain.tld pointing onto your system
+- make sure /etc/hosts has a matching pair (127.0.1.1 abuseio abuseio.yourdomain.tl)
 
 ## Automated installations
 
@@ -446,6 +448,17 @@ This scheduler job needs to run every minute and will be kicking off internal jo
 Run: `crontab -e -u abuseio`
 ```
 * * * * * php /opt/abuseio/artisan schedule:run >> /dev/null 2>&1
+```
+
+## Verification of mail setup
+To aid administrators in properly checking for a working mail setup, a CLI command has been created to validate the mail configuration.
+
+You are highly recommended to run this command, then check both output as well as actually receiving this e-mail in your administrators mailbox:
+
+```
+sudo -u abuseio bash
+cd /opt/abuseio
+php artisan mail:test --to="admin@isp.local"
 ```
 
 ## Setup local resolving
