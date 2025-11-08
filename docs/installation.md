@@ -300,7 +300,7 @@ All these things should be done as user 'abuseio' from within the folder /opt/ab
 
 ## Environment settings
  
-The .env file contains your base configuration and must be set correctly because you will be setting the application's configuration. create the file /opt/abuseio/.env and update the SQL username, password and database you have created in the previous step.
+The .env file contains your base configuration and must be set correctly because you will be setting the application's configuration. create the file /opt/abuseio/.env and update the SQL username, password and database you have created in the previous step. Make sure you enter your fallback email for errors (MAIN_EMAILPARSER_FALLBACK_MAIL).
 
 ```bash
 APP_ENV=production
@@ -308,6 +308,8 @@ APP_DEBUG=false
 APP_KEY=DEFAULT
 APP_ID=DEFAULT
 APP_URL='http://localhost/'
+
+MAIN_EMAILPARSER_FALLBACK_MAIL=admin@isp.local
 
 DB_DRIVER=mariadb
 DB_HOST=localhost
