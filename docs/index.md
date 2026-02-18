@@ -1,4 +1,4 @@
-# AbuseIO 4.1 Documentation
+# AbuseIO 5.0 Documentation
 
 # About AbuseIO
 
@@ -60,7 +60,7 @@ Found incomplete or incorrect documentation? Then please create an issue to repo
 
 [Installation](installation.md)
 
-[Migrating from 4.0](migration.md)
+[Upgrading from 4.x](upgrading.md)
 
 [Main configuration](configuration_main.md)
 
