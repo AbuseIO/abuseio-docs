@@ -1,4 +1,4 @@
-site_name: AbuseIO 4.1
+site_name: AbuseIO 5.0
 site_url: https://docs.abuse.io
 site_author: AbuseIO Foundation
 markdown_extensions:
@@ -8,9 +8,9 @@ markdown_extensions:
     - sane_lists
     - admonition
 extra:
-    version: 4.1
+    version: 5.0
 theme: mkdocs
-pages:
+nav:
 - 'Index': 'index.md'
 - 'Getting Started':
     - 'Installation': 'installation.md'
