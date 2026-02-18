@@ -15,7 +15,7 @@ nav:
 - 'Getting Started':
     - 'Installation': 'installation.md'
     - 'Migrating from 3.x': 'old_version.md'
-    - 'Migrating from 4.0': 'upgrading.md'
+    - 'Migrating from 4.x': 'upgrading.md'
     - 'Main configuration': 'configuration_main.md'
     - 'Common problems': 'common_problems.md'
 - 'User Guide':
