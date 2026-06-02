@@ -6,7 +6,7 @@
 + MTA (Postfix or Exim) or Fetchmail to handle incoming e-mails
 + Web server software (Apache or Nginx)
 + Database backend (MariaDB)
-+ PHP 8.4 or better (See Larevel LTS requirements, Both CLI as apache module)
++ PHP 8.5 or better (See Larevel LTS requirements, Both CLI as apache module)
 + (__optional__) Local resolving nameserver (Bind, pDNSRecursor) ([more info](#resolving))
 
 # Preparation
@@ -48,7 +48,7 @@ apt-get update
 apt-get install software-properties-common
 LC_ALL=C.UTF-8 add-apt-repository ppa:ondrej/php # Press enter to confirm.
 apt update
-apt-get install composer curl git mariadb-server apache2 libapache2-mod-php8.4 php8.4 php-pear php8.4-dev php8.4-mysql php8.4-curl php8.4-intl php8.4-bcmath php8.4-mbstring php8.4-zip
+apt-get install composer curl git mariadb-server apache2 libapache2-mod-php8.5 php8.5 php-pear php8.5-dev php8.5-mysql php8.5-curl php8.5-intl php8.5-bcmath php8.5-mbstring php8.5-zip
 ```
 
 In addition you will need to install an MTA. The examples provided are based on postfix which is defaultly used, but you are free to use any MTA (to collection method) you want.  Another solution is using fetchmail, which retrieves mails from a POP3- or IMAP-mailbox, which is described in the advanced user guide. Answering setup with 'Internet Site' and entering a VALID FQDN for the system mail name is a good start. Postfix configuration beyond the minimum operational settings for AbuseIO are out of scope for this documentation.
@@ -71,15 +71,16 @@ apt-get -y install gcc g++ make autoconf libc-dev pkg-config
 apt-get -y install re2c
 
 cd /tmp
-wget https://pecl.php.net/get/mailparse-3.1.9.tgz
-tar -zxvf mailparse-3.1.9.tgz
-cd  mailparse-3.1.9
+wget https://pecl.php.net/get/mailparse-3.2.0.tgz
+tar -zxvf mailparse-3.2.0.tgz
+cd  mailparse-3.2.0
 phpize
 ./configure
-sed -i 's/^\(#error .* the mbstring extension!\)/\/\/\1/' mailparse.c
+#Only do this if you get errors on mailparse, but this is fixed in 3.2.0
+#sed -i 's/^\(#error .* the mbstring extension!\)/\/\/\1/' mailparse.c
 make
 make install
-echo "extension=mailparse.so" > /etc/php/8.4/mods-available/mailparse.ini
+echo "extension=mailparse.so" > /etc/php/8.5/mods-available/mailparse.ini
 phpenmod mailparse
 
 ```
@@ -105,7 +106,7 @@ Confirm composer version upgrade
 ```
 sudo -u www-data composer --version
 ```
-Expected output 2.8.12 with PHP version 8.4.13 or better.
+Expected output 2.8.12 with PHP version 8.5.13 or better.
 
 
 ## Create local user
